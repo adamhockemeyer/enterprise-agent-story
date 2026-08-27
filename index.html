@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A progressive seller-led whiteboard for the Microsoft enterprise agent story.">
+  <title>Enterprise agents: opportunity, value evidence, and architecture</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 3Q8 1 14 3L13 13Q8 15 3 13Z' fill='%237058b6'/%3E%3C/svg%3E">
+  <script>
+    document.documentElement.dataset.theme =
+      new URLSearchParams(location.search).get("theme") === "dark" ? "dark" : "light";
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --art-bg: #edf3f7;
+      --art-board: #fbfdff;
+      --art-surface: #ffffff;
+      --art-surface-soft: #eef4f8;
+      --art-border: #b9c8d2;
+      --art-ink: #1f2937;
+      --art-muted: #526273;
+      --art-faint: #82909d;
+      --art-violet: #7058b6;
+      --art-violet-soft: #eee9fa;
+      --art-blue: #2878b5;
+      --art-blue-soft: #e8f3fb;
+      --art-green: #34835b;
+      --art-green-soft: #e8f4ed;
+      --art-amber: #b97819;
+      --art-amber-soft: #fff2d8;
+      --art-yellow: #ffe66b;
+      --art-yellow-ink: #3c3515;
+      --art-telemetry: #74808b;
+      --art-telemetry-soft: #eaeef1;
+      --art-focus: #0d6fbb;
+      --art-shadow: 0 12px 32px rgb(35 54 70 / 9%);
+      --art-overlay: rgb(21 31 43 / 24%);
+      --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+      --hand: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+    }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --art-bg: #0d1822;
+      --art-board: #132330;
+      --art-surface: #172a38;
+      --art-surface-soft: #1d3343;
+      --art-border: #496170;
+      --art-ink: #edf5fa;
+      --art-muted: #b7c7d2;
+      --art-faint: #91a5b2;
+      --art-violet: #b8a3ee;
+      --art-violet-soft: #322c4a;
+      --art-blue: #79bff0;
+      --art-blue-soft: #183b53;
+      --art-green: #7ac59a;
+      --art-green-soft: #1d4331;
+      --art-amber: #edb958;
+      --art-amber-soft: #49391f;
+      --art-yellow: #d7bc42;
+      --art-yellow-ink: #201c09;
+      --art-telemetry: #a4b1bb;
+      --art-telemetry-soft: #22323f;
+      --art-focus: #82c9ff;
+      --art-shadow: 0 14px 38px rgb(0 0 0 / 28%);
+      --art-overlay: rgb(0 0 0 / 45%);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 320px; }
+    body {
+      margin: 0;
+      padding-bottom: 0;
+      background: var(--art-bg);
+      color: var(--art-ink);
+      font-family: var(--ui);
+    }
+    button { font: inherit; }
+    button:focus-visible, [tabindex="0"]:focus-visible {
+      outline: 3px solid var(--art-focus);
+      outline-offset: 3px;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .shell {
+      width: min(1540px, calc(100% - 28px));
+      margin: 10px auto 14px;
+      transition: width .28s cubic-bezier(.2,.7,.2,1), margin .28s cubic-bezier(.2,.7,.2,1);
+    }
+    .board {
+      overflow: hidden;
+      border: 1px solid var(--art-border);
+      background: var(--art-board);
+      box-shadow: var(--art-shadow);
+    }
+    .board-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+      gap: 16px;
+      align-items: start;
+      padding: 11px 18px 9px;
+      border-bottom: 1px solid var(--art-border);
+    }
+    .title-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    .marker-cap {
+      flex: 0 0 auto;
+      width: 10px;
+      height: 47px;
+      margin-top: 2px;
+      background: var(--art-violet);
+      transform: rotate(-2deg);
+    }
+    h1 {
+      max-width: 960px;
+      margin: 0;
+      font-size: clamp(1.5rem, 2.1vw, 2.05rem);
+      font-weight: 690;
+      letter-spacing: -.045em;
+      line-height: 1.03;
+    }
+    .thesis {
+      max-width: 780px;
+      margin: 5px 0 0 25px;
+      color: var(--art-muted);
+      font-size: .9rem;
+      line-height: 1.42;
+    }
+    .thesis strong { color: var(--art-ink); }
+    .head-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+    }
+    .board-nav {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+      margin-left: 25px;
+    }
+    .board-tab {
+      padding: 5px 9px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--art-muted);
+      cursor: pointer;
+      font-size: .74rem;
+      font-weight: 750;
+    }
+    .board-tab[aria-selected="true"] {
+      border-color: var(--art-violet);
+      background: var(--art-violet-soft);
+      color: var(--art-violet);
+    }
+    .seller-cue {
+      margin: 0 auto 0 0;
+      color: var(--art-violet);
+      font-family: var(--hand);
+      font-size: .88rem;
+      font-weight: 700;
+      transform: rotate(-1deg);
+    }
+    .theme-toggle {
+      border: 0;
+      border-bottom: 1px solid currentColor;
+      background: transparent;
+      color: var(--art-muted);
+      cursor: pointer;
+      font-size: .76rem;
+      font-weight: 650;
+    }
+
+    .prompt-deck {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px 18px;
+      align-items: center;
+      padding: 5px 18px;
+      border-bottom: 1px solid var(--art-border);
+      background: var(--art-surface-soft);
+    }
+    .deck-label {
+      color: var(--art-muted);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .deck-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      padding: 4px 2px 6px;
+      scrollbar-width: thin;
+    }
+    .prompt {
+      flex: 0 0 auto;
+      max-width: 100%;
+      padding: 5px 11px;
+      border: 1px solid var(--art-border);
+      border-radius: 999px;
+      background: var(--art-surface);
+      color: var(--art-muted);
+      cursor: pointer;
+      font-size: .76rem;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .prompt:hover { border-color: var(--art-ink); color: var(--art-ink); }
+    .prompt[aria-pressed="true"] {
+      border-color: var(--art-violet);
+      background: var(--art-violet-soft);
+      color: var(--art-violet);
+    }
+    .board-panel { display: none; }
+    .board-panel.is-active { display: block; }
+    body[data-board="opportunity"] #architecture-deck { display: none; }
+    body[data-board="opportunity"] .presenter-controls,
+    body[data-board="opportunity"] .legend { display: none; }
+    .business-board {
+      display: block;
+      width: min(100%, max(1040px, calc((100vh - 230px) * 2)));
+      height: auto;
+      margin-inline: auto;
+    }
+    .business-actions {
+      display: flex;
+      justify-content: center;
+      padding: 12px 18px 16px;
+      border-top: 1px solid var(--art-border);
+      background: var(--art-surface-soft);
+    }
+    .business-continue {
+      padding: 9px 15px;
+      border: 1px solid var(--art-ink);
+      background: var(--art-ink);
+      color: var(--art-board);
+      cursor: pointer;
+      font-weight: 750;
+    }
+    .phase-cue {
+      position: relative;
+      min-height: 39px;
+      overflow: hidden;
+      padding: 9px 22px 7px;
+      border-bottom: 1px solid var(--art-border);
+      background: var(--art-board);
+      color: var(--art-ink);
+      font-family: var(--hand);
+      font-size: clamp(.82rem, 1.2vw, 1rem);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .phase-cue::after {
+      position: absolute;
+      bottom: 5px;
+      left: 22px;
+      width: min(390px, 68%);
+      height: 2px;
+      background: var(--art-violet);
+      content: "";
+      opacity: .72;
+      transform: rotate(-.7deg);
+    }
+    .phase-cue.is-erasing::before {
+      position: absolute;
+      inset: 4px 0 3px;
+      z-index: 1;
+      background: linear-gradient(90deg, transparent 0%, var(--art-board) 14%, var(--art-board) 86%, transparent 100%);
+      content: "";
+      animation: board-wipe .15s ease-in forwards;
+    }
+    .phase-cue.is-writing .phase-text { animation: board-write .2s ease-out both; }
+    @keyframes board-wipe {
+      from { clip-path: inset(0 100% 0 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+    @keyframes board-write {
+      from { opacity: 0; filter: blur(1px); transform: translateX(-5px) rotate(-.3deg); }
+      to { opacity: 1; filter: blur(0); transform: translateX(0) rotate(0); }
+    }
+
+    .canvas-scroll {
+      position: relative;
+      overflow-x: auto;
+      background: var(--art-board);
+      scrollbar-color: var(--art-border) transparent;
+    }
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 1040px;
+    }
+    .whiteboard {
+      display: block;
+      width: min(100%, max(960px, calc((100vh - 350px) * 2)));
+      height: auto;
+      margin-inline: auto;
+    }
+    .mobile-pan-note {
+      display: none;
+      margin: 0;
+      padding: 6px 14px;
+      border-bottom: 1px solid var(--art-border);
+      color: var(--art-muted);
+      font-size: .72rem;
+    }
+
+    .presenter-controls {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      z-index: 20;
+      width: min(1380px, calc(100% - 28px));
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 18px;
+      align-items: center;
+      padding: 10px 18px;
+      border-top: 1px solid var(--art-border);
+      background: color-mix(in srgb, var(--art-board) 94%, transparent);
+      box-shadow: 0 8px 26px var(--art-overlay);
+      backdrop-filter: blur(8px);
+      transform: translateX(-50%);
+    }
+    .control-cluster { display: flex; align-items: center; gap: 8px; }
+    .control {
+      min-height: 38px;
+      padding: 7px 13px;
+      border: 1px solid var(--art-border);
+      background: var(--art-surface);
+      color: var(--art-ink);
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+    .control:hover:not(:disabled) { border-color: var(--art-ink); }
+    .control.primary {
+      min-width: 126px;
+      border-color: var(--art-ink);
+      background: var(--art-ink);
+      color: var(--art-board);
+    }
+    .control.text {
+      border-color: transparent;
+      background: transparent;
+      color: var(--art-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .control:disabled { cursor: not-allowed; opacity: .38; }
+    .stepper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(7px, 1.2vw, 16px);
+    }
+    .step-mark {
+      position: relative;
+      width: 25px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--art-faint);
+      cursor: pointer;
+      font-size: .7rem;
+      font-weight: 800;
+    }
+    .step-mark::after {
+      position: absolute;
+      right: 5px;
+      bottom: 1px;
+      left: 5px;
+      height: 3px;
+      background: var(--art-border);
+      content: "";
+      transform: rotate(-2deg);
+    }
+    .step-mark.is-complete { color: var(--art-muted); }
+    .step-mark.is-complete::after { background: var(--art-violet); }
+    .step-mark[aria-current="step"] { color: var(--art-ink); }
+    .step-mark[aria-current="step"]::after { height: 5px; background: var(--art-ink); }
+    .step-status {
+      position: absolute;
+      top: -9999px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      padding: 7px 22px 8px;
+      border-top: 1px solid var(--art-border);
+      color: var(--art-muted);
+      font-size: .66rem;
+    }
+    .legend-item {
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-item.is-active { display: inline-flex; }
+    .legend-line { width: 27px; height: 0; border-top: 2px solid var(--art-ink); }
+    .legend-line.violet { border-color: var(--art-violet); }
+    .legend-line.blue { border-color: var(--art-blue); border-top-style: dashed; }
+    .legend-line.gray { border-color: var(--art-telemetry); border-top-style: dotted; }
+    .legend-line.ink-dot { border-color: var(--art-ink); border-top-style: dotted; }
+    .legend-line.green { border-color: var(--art-green); }
+    .legend-line.amber { border-color: var(--art-amber); }
+
+    .detail-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 30;
+      width: min(410px, calc(100% - 28px));
+      height: 100dvh;
+      padding: 22px;
+      border-left: 1px solid var(--art-border);
+      background: var(--art-surface);
+      box-shadow: -16px 0 34px var(--art-overlay);
+      overflow-y: auto;
+      transform: translateX(105%);
+      transition: transform .22s ease;
+    }
+    .detail-drawer.is-open { transform: translateX(0); }
+    @media (min-width: 821px) {
+      body.is-drawer-open .board-head,
+      body.is-drawer-open .prompt-deck {
+        padding-right: 434px;
+        transition: padding-right .28s cubic-bezier(.2,.7,.2,1);
+      }
+      body.is-drawer-open .canvas-scroll {
+        width: calc(100% - 434px);
+        transition: width .28s cubic-bezier(.2,.7,.2,1);
+      }
+      body.is-drawer-open .canvas-wrap {
+        min-width: 0;
+      }
+      body.is-drawer-open .whiteboard {
+        width: 100%;
+        max-width: none;
+      }
+    }
+    body.is-drawer-open .presenter-controls {
+      left: 14px;
+      width: min(1380px, calc(100% - 438px));
+      transform: none;
+      transition: left .28s cubic-bezier(.2,.7,.2,1), width .28s cubic-bezier(.2,.7,.2,1), transform .28s cubic-bezier(.2,.7,.2,1);
+    }
+    .drawer-close {
+      float: right;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--art-border);
+      background: transparent;
+      color: var(--art-ink);
+      cursor: pointer;
+      font-size: 1.15rem;
+    }
+    .drawer-kicker {
+      margin: 7px 50px 5px 0;
+      color: var(--art-violet);
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .detail-drawer h2 { margin: 0 0 22px; font-size: 1.5rem; letter-spacing: -.03em; }
+    .detail-row { padding: 13px 0; border-top: 1px solid var(--art-border); }
+    .detail-row h3 {
+      margin: 0 0 4px;
+      color: var(--art-muted);
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .detail-row p { margin: 0; font-size: .88rem; line-height: 1.5; }
+    .answer-head {
+      margin: 0 0 6px;
+      color: var(--art-muted);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .answer-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .answer-row {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 10px;
+      padding: 11px 0;
+      border-top: 1px solid var(--art-border);
+    }
+    .answer-num {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--art-ink);
+      color: var(--art-board);
+      font-size: .72rem;
+      font-weight: 800;
+    }
+    .answer-layer {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--art-faint);
+      font-size: .64rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .answer-chip {
+      display: inline-block;
+      margin-bottom: 5px;
+      padding: 2px 9px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 750;
+    }
+    .answer-row p { margin: 0; font-size: .84rem; line-height: 1.48; }
+    .answer-row[data-cat="build"] .answer-num,
+    .answer-row[data-cat="gov"] .answer-num { background: var(--art-violet); }
+    .answer-row[data-cat="build"] .answer-chip,
+    .answer-row[data-cat="gov"] .answer-chip { background: var(--art-violet-soft); color: var(--art-violet); }
+    .answer-row[data-cat="access"] .answer-num { background: var(--art-blue); }
+    .answer-row[data-cat="access"] .answer-chip { background: var(--art-blue-soft); color: var(--art-blue); }
+    .answer-row[data-cat="data"] .answer-num { background: var(--art-green); }
+    .answer-row[data-cat="data"] .answer-chip { background: var(--art-green-soft); color: var(--art-green); }
+    .answer-row[data-cat="ops"] .answer-num { background: var(--art-telemetry); }
+    .answer-row[data-cat="ops"] .answer-chip { background: var(--art-telemetry-soft); color: var(--art-muted); }
+    .answer-row[data-cat="value"] .answer-num { background: var(--art-amber); }
+    .answer-row[data-cat="value"] .answer-chip { background: var(--art-amber-soft); color: var(--art-amber); }
+    .secondary-note {
+      margin-top: 20px;
+      padding: 13px;
+      border-left: 3px solid var(--art-violet);
+      background: var(--art-violet-soft);
+      color: var(--art-muted);
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+    .clear-focus {
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid var(--art-violet);
+      background: transparent;
+      color: var(--art-violet);
+      cursor: pointer;
+      font-weight: 750;
+    }
+
+    /* SVG whiteboard language */
+    .ink, .violet, .blue, .telemetry, .green, .amber {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+    .ink { stroke: var(--art-ink); stroke-width: 2.3; }
+    .violet { stroke: var(--art-violet); stroke-width: 3; }
+    .blue { stroke: var(--art-blue); stroke-width: 2.7; }
+    .telemetry { stroke: var(--art-telemetry); stroke-width: 2.4; }
+    .green { stroke: var(--art-green); stroke-width: 2.7; }
+    .amber { stroke: var(--art-amber); stroke-width: 3; }
+    .dash-blue { stroke-dasharray: 10 8; }
+    .dash-violet { stroke-dasharray: 8 7; }
+    .dot-gray { stroke-dasharray: 2 8; }
+    .dot-ink { stroke-dasharray: 2 7; }
+    .dash-ink { stroke-dasharray: 7 7; }
+    .node-fill { fill: var(--art-surface); }
+    .fill-violet { fill: var(--art-violet-soft); }
+    .fill-blue { fill: var(--art-blue-soft); }
+    .fill-green { fill: var(--art-green-soft); }
+    .fill-amber { fill: var(--art-amber-soft); }
+    .fill-slate { fill: var(--art-telemetry-soft); }
+    .fill-yellow { fill: var(--art-yellow); }
+    .svg-product {
+      fill: var(--art-ink);
+      font-family: var(--ui);
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .svg-title {
+      fill: var(--art-ink);
+      font-family: var(--ui);
+      font-size: 22px;
+      font-weight: 720;
+    }
+    .svg-small {
+      fill: var(--art-muted);
+      font-family: var(--ui);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .svg-tiny {
+      fill: var(--art-muted);
+      font-family: var(--ui);
+      font-size: 10px;
+      font-weight: 650;
+    }
+    .svg-chip {
+      fill: var(--art-ink);
+      font-family: var(--ui);
+      font-size: 15.5px;
+      font-weight: 700;
+    }
+    .svg-band {
+      fill: var(--art-faint);
+      font-family: var(--ui);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .07em;
+    }
+    .svg-hand {
+      fill: var(--art-ink);
+      font-family: var(--hand);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .svg-hand.amber-text { fill: var(--art-amber); font-size: 14px; }
+    .svg-hand.sticky-text { fill: var(--art-yellow-ink); font-size: 17px; }
+    .label { opacity: 0; transition: opacity .18s ease .62s; }
+    .fade-in { opacity: 0; transition: opacity .34s ease .3s; }
+    .reveal.is-active .fade-in { opacity: 1; }
+    .draw {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset .68s cubic-bezier(.52,.05,.28,1);
+    }
+    .reveal { visibility: hidden; pointer-events: none; }
+    .reveal.is-active { visibility: visible; pointer-events: auto; }
+    .reveal.is-active .draw { stroke-dashoffset: 0; }
+    .reveal.is-active .label { opacity: 1; }
+    .reveal.is-active .node-fill,
+    .reveal.is-active .fill-violet,
+    .reveal.is-active .fill-blue,
+    .reveal.is-active .fill-green,
+    .reveal.is-active .fill-amber { animation: label-in .18s ease .58s both; }
+    .node-hit { cursor: pointer; }
+    .node-hit:hover .draw { stroke-width: 4.2; }
+
+    /* Focus mode: strongly de-emphasise everything that is not part of the answer */
+    body[data-board="architecture"][data-focus] .whiteboard .reveal > * {
+      opacity: .1;
+      transition: opacity .22s ease;
+    }
+    body[data-board="architecture"][data-focus] .whiteboard .reveal > .is-focused { opacity: 1; }
+    .node-hit.is-focused .draw { stroke-width: 4.4; }
+    .node-hit.is-focused[data-cat="build"] .draw { stroke: var(--art-violet); }
+    .node-hit.is-focused[data-cat="build"] .node-fill { fill: var(--art-violet-soft); }
+    .node-hit.is-focused[data-cat="gov"] .draw { stroke: var(--art-violet); }
+    .node-hit.is-focused[data-cat="gov"] .node-fill { fill: var(--art-violet-soft); }
+    .node-hit.is-focused[data-cat="access"] .draw { stroke: var(--art-blue); }
+    .node-hit.is-focused[data-cat="access"] .node-fill { fill: var(--art-blue-soft); }
+    .node-hit.is-focused[data-cat="data"] .draw { stroke: var(--art-green); }
+    .node-hit.is-focused[data-cat="data"] .node-fill { fill: var(--art-green-soft); }
+    .node-hit.is-focused[data-cat="ops"] .draw { stroke: var(--art-telemetry); }
+    .node-hit.is-focused[data-cat="ops"] .node-fill { fill: var(--art-telemetry-soft); }
+    .node-hit.is-focused[data-cat="value"] .draw { stroke: var(--art-amber); }
+    .node-hit.is-focused[data-cat="value"] .node-fill { fill: var(--art-amber-soft); }
+    .node-hit.is-focused[data-cat="surface"] .draw { stroke: var(--art-ink); }
+
+    #route-overlay { pointer-events: none; }
+    .route-badge { fill: var(--art-ink); stroke: var(--art-board); stroke-width: 2; }
+    .route-badge.cat-build, .route-badge.cat-gov { fill: var(--art-violet); }
+    .route-badge.cat-access { fill: var(--art-blue); }
+    .route-badge.cat-data { fill: var(--art-green); }
+    .route-badge.cat-ops { fill: var(--art-telemetry); }
+    .route-badge.cat-value { fill: var(--art-amber); }
+    .route-number {
+      fill: var(--art-board);
+      font-family: var(--ui);
+      font-size: 13px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+    .initializing .draw, .initializing .label, .initializing .fade-in,
+    .snap .draw, .snap .label, .snap .fade-in {
+      transition: none !important;
+      animation: none !important;
+    }
+    @keyframes label-in { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 820px) {
+      body { padding-bottom: 142px; }
+      .shell { width: calc(100% - 16px); margin-top: 8px; }
+      .board-head { grid-template-columns: 1fr; gap: 10px; padding: 15px 14px 12px; }
+      .thesis { margin-left: 25px; }
+      .head-actions { justify-content: space-between; }
+      .prompt-deck { grid-template-columns: 1fr; gap: 3px; padding: 8px 14px; }
+      .board-nav { margin-left: 25px; }
+      .phase-cue { padding-inline: 14px; }
+      .phase-cue::after { left: 14px; }
+      .mobile-pan-note { display: block; }
+      .canvas-wrap { min-width: 1000px; }
+      .presenter-controls {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 8px 10px;
+      }
+      .control-cluster { justify-content: center; }
+      .stepper { grid-row: 1; }
+      .presenter-controls > .control.text { display: none; }
+      .legend { padding-inline: 12px; }
+      body.is-drawer-open .presenter-controls {
+        left: 50%;
+        width: calc(100% - 16px);
+        transform: translateX(-50%);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-delay: 0s !important;
+        transition-duration: .01ms !important;
+        transition-delay: 0s !important;
+      }
+    }
+  </style>
+</head>
+<body class="initializing">
+  <main class="shell">
+    <section class="board" aria-labelledby="board-title">
+      <header class="board-head">
+        <div>
+          <div class="title-row">
+            <span class="marker-cap" aria-hidden="true"></span>
+            <h1 id="board-title">Enterprise agents: opportunity, value evidence, and architecture</h1>
+          </div>
+          <p class="thesis" id="board-thesis"><strong>From agent opportunity to measurable business value.</strong> Start with the work, then design only the capabilities required to scale it.</p>
+          <div class="board-nav" role="tablist" aria-label="Whiteboard story boards">
+            <button class="board-tab" id="board-opportunity-tab" type="button" role="tab" aria-controls="board-opportunity" aria-selected="true">1 · Opportunity + value evidence</button>
+            <button class="board-tab" id="board-architecture-tab" type="button" role="tab" aria-controls="board-architecture" aria-selected="false">2 · Enterprise architecture</button>
+          </div>
+        </div>
+        <div class="head-actions">
+          <p class="seller-cue" id="board-cue">Start with the work, not the stack.</p>
+          <button class="theme-toggle" id="theme-toggle" type="button">Use dark board</button>
+        </div>
+      </header>
+
+      <nav class="prompt-deck" id="architecture-deck" aria-label="Architecture question deck">
+        <span class="deck-label">Customer questions</span>
+        <div class="deck-list">
+          <button class="prompt" type="button" data-question="govern" aria-pressed="false">How do we govern this?</button>
+          <button class="prompt" type="button" data-question="cost" aria-pressed="false">How do we manage cost and tokens?</button>
+          <button class="prompt" type="button" data-question="connect" aria-pressed="false">How do we connect safely?</button>
+          <button class="prompt" type="button" data-question="data" aria-pressed="false">How do we use trusted data?</button>
+          <button class="prompt" type="button" data-question="platforms" aria-pressed="false">Can we use our existing platforms?</button>
+          <button class="prompt" type="button" data-question="existingAgents" aria-pressed="false">How do we use the agents we already have?</button>
+          <button class="prompt" type="button" data-question="discover" aria-pressed="false">How do builders find approved tools?</button>
+        </div>
+      </nav>
+
+      <section class="board-panel is-active" id="board-opportunity" role="tabpanel" aria-labelledby="board-opportunity-tab">
+        <div class="canvas-scroll">
+          <div class="canvas-wrap">
+            <svg class="business-board" viewBox="0 0 1440 720" role="img" aria-labelledby="business-title business-desc">
+              <title id="business-title">Agent opportunity and value evidence whiteboard</title>
+              <desc id="business-desc">A business-first whiteboard that connects a concrete work opportunity to an appropriate agentic pattern, evidence, and a scale, adjust, or stop decision.</desc>
+              <defs>
+                <marker id="business-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="ink"/></marker>
+                <marker id="business-amber-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="amber"/></marker>
+              </defs>
+              <g transform="translate(38 34) rotate(-1)">
+                <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="fill-yellow"/>
+                <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="ink"/>
+                <text x="22" y="40" class="svg-hand sticky-text">Start with the work:</text>
+                <text x="22" y="68" class="svg-hand sticky-text">Where is the friction?</text>
+                <text x="22" y="96" class="svg-hand sticky-text">Who owns the outcome?</text>
+                <text x="22" y="124" class="svg-hand sticky-text">What is the baseline?</text>
+              </g>
+              <text x="370" y="62" class="svg-hand">Board 1 · find the opportunity worth scaling</text>
+              <path d="M370 70 Q766 76 1162 68" class="ink" opacity=".35"/>
+
+              <g id="opportunity" class="node-hit" tabindex="0" role="button" aria-label="Details for the business opportunity">
+                <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="node-fill"/>
+                <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="ink"/>
+                <text x="185" y="302" text-anchor="middle" class="svg-product">Concrete work opportunity</text>
+                <text x="185" y="328" text-anchor="middle" class="svg-small">job · friction · owner · baseline</text>
+                <text x="185" y="350" text-anchor="middle" class="svg-tiny">not a product-first pilot</text>
+              </g>
+              <path d="M320 314 Q346 306 372 314" class="ink" marker-end="url(#business-arrow)"/>
+              <g id="pattern" class="node-hit" tabindex="0" role="button" aria-label="Details for selecting an agentic pattern">
+                <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="fill-violet"/>
+                <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="violet"/>
+                <text x="613" y="267" text-anchor="middle" class="svg-product">Choose the right agentic pattern</text>
+                <path d="M410 289 Q500 283 587 290 L584 344 Q498 350 412 343 Z" class="node-fill"/>
+                <path d="M410 289 Q500 283 587 290 L584 344 Q498 350 412 343 Z" class="ink"/>
+                <text x="498" y="314" text-anchor="middle" class="svg-small">Copilot experience</text>
+                <text x="498" y="334" text-anchor="middle" class="svg-tiny">assist people in the flow of work</text>
+                <path d="M635 289 Q724 283 812 290 L809 344 Q723 350 637 343 Z" class="node-fill"/>
+                <path d="M635 289 Q724 283 812 290 L809 344 Q723 350 637 343 Z" class="ink"/>
+                <text x="723" y="314" text-anchor="middle" class="svg-small">Bounded agent + workflow</text>
+                <text x="723" y="334" text-anchor="middle" class="svg-tiny">approval and deterministic steps</text>
+                <text x="613" y="374" text-anchor="middle" class="svg-hand">More autonomy only when the evidence supports it.</text>
+              </g>
+              <path d="M846 314 Q872 306 898 314" class="ink" marker-end="url(#business-arrow)"/>
+              <g id="evidence" class="node-hit" tabindex="0" role="button" aria-label="Details for value evidence">
+                <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="fill-amber"/>
+                <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="amber"/>
+                <text x="1040" y="302" text-anchor="middle" class="svg-product">Value evidence</text>
+                <text x="1040" y="327" text-anchor="middle" class="svg-small">quality · adoption · cost · outcome</text>
+                <text x="1040" y="349" text-anchor="middle" class="svg-tiny">technical telemetry is one input</text>
+              </g>
+              <path d="M1175 314 Q1200 306 1224 314" class="amber" marker-end="url(#business-amber-arrow)"/>
+              <g id="valueDecision" class="node-hit" tabindex="0" role="button" aria-label="Details for the value decision">
+                <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="fill-amber"/>
+                <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="amber"/>
+                <text x="1316" y="302" text-anchor="middle" class="svg-hand amber-text">Scale</text>
+                <text x="1316" y="323" text-anchor="middle" class="svg-hand amber-text">adjust / stop</text>
+                <text x="1316" y="347" text-anchor="middle" class="svg-tiny">fund the evidence</text>
+              </g>
+
+              <path d="M75 484 Q704 470 1365 486" class="amber" opacity=".5"/>
+              <text x="76" y="457" class="svg-hand amber-text">From pilots to measurable returns: manage the investment, not just the model.</text>
+              <text x="78" y="518" class="svg-title">The operating loop</text>
+              <text x="78" y="542" class="svg-small">Optimize the request at runtime · improve the workflow over time · govern spend continuously</text>
+              <path d="M110 594 Q327 568 536 594 Q718 621 913 594 Q1126 567 1328 594" class="amber" marker-end="url(#business-amber-arrow)"/>
+              <text x="110" y="634" class="svg-hand amber-text">right-size each request</text>
+              <text x="593" y="634" class="svg-hand amber-text">improve the agent workflow</text>
+              <text x="1095" y="634" class="svg-hand amber-text">hold guardrails and budgets</text>
+              <text x="720" y="687" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this selected opportunity real, connected, governed, and measurable?</text>
+            </svg>
+          </div>
+        </div>
+        <div class="business-actions">
+          <button class="business-continue" id="continue-to-architecture" type="button">Continue to enterprise architecture →</button>
+        </div>
+      </section>
+
+      <section class="board-panel" id="board-architecture" role="tabpanel" aria-labelledby="board-architecture-tab" hidden>
+        <div class="phase-cue" id="phase-cue" aria-live="polite"><span class="phase-text" id="phase-text">Start where the work already happens.</span></div>
+        <p class="mobile-pan-note">The whiteboard is wide by design. Swipe sideways to follow the drawing.</p>
+        <div class="canvas-scroll" id="canvas-scroll">
+          <div class="canvas-wrap">
+            <svg class="whiteboard" viewBox="0 0 1440 720" role="img" aria-labelledby="svg-title svg-desc">
+              <title id="svg-title">Progressive enterprise agent whiteboard</title>
+              <desc id="svg-desc">A layered top-to-bottom whiteboard: where work happens, where agents are built, how agents connect safely, what agents can use, where trusted business data lives, and estate-level governance across the whole agent estate.</desc>
+              <defs>
+                <marker id="arrow-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 1 1 L 9 5 L 1 9" class="ink"/>
+                </marker>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 1 1 L 9 5 L 1 9" class="blue"/>
+                </marker>
+                <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M 1 1 L 9 5 L 1 9" class="green"/>
+                </marker>
+              </defs>
+
+              <!-- Band 1 · where work happens -->
+              <g data-step="0" class="reveal is-active" aria-label="Where work happens">
+                <g class="label">
+                  <text x="30" y="100" class="svg-band">WHERE WORK</text>
+                  <text x="30" y="116" class="svg-band">HAPPENS</text>
+                </g>
+
+                <g id="m365" class="node-hit" data-cat="surface" tabindex="-1" role="button" aria-label="Details for Microsoft 365 Copilot">
+                  <path d="M300 75 Q545 69 790 74 L787 140 Q545 146 302 142 Z" class="node-fill"/>
+                  <path pathLength="1" d="M300 75 Q545 69 790 74 L787 140 Q545 146 302 142 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="545" y="106" text-anchor="middle" class="svg-product">Microsoft 365 Copilot</text>
+                    <text x="545" y="130" text-anchor="middle" class="svg-small">where employees already work</text>
+                  </g>
+                </g>
+
+                <g id="github" class="node-hit" data-cat="surface" tabindex="-1" role="button" aria-label="Details for GitHub Copilot">
+                  <path d="M860 75 Q1105 69 1350 74 L1347 140 Q1105 146 862 142 Z" class="node-fill"/>
+                  <path pathLength="1" d="M860 75 Q1105 69 1350 74 L1347 140 Q1105 146 862 142 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="1105" y="106" text-anchor="middle" class="svg-product">GitHub Copilot</text>
+                    <text x="1105" y="130" text-anchor="middle" class="svg-small">where developers already work</text>
+                  </g>
+                </g>
+
+                <g id="scout" class="node-hit" data-cat="surface" tabindex="-1" role="button" aria-label="Details for the Scout preview relationship">
+                  <rect x="548" y="142" width="554" height="46" fill="none" pointer-events="all"/>
+                  <path d="M600 143 Q598 158 612 161 Q825 167 1038 161 Q1052 158 1050 143" class="ink dot-ink fade-in"/>
+                  <g class="label">
+                    <text x="825" y="181" text-anchor="middle" class="svg-tiny">Scout preview — paired Microsoft 365 Copilot + GitHub Copilot Business/Enterprise entitlement</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Band 2 · where agents are built -->
+              <g data-step="1" class="reveal" aria-label="Where agents are built">
+                <g class="label">
+                  <text x="30" y="218" class="svg-band">WHERE AGENTS</text>
+                  <text x="30" y="234" class="svg-band">ARE BUILT</text>
+                  <text x="30" y="254" class="svg-tiny">use one or both, by team and scenario</text>
+                </g>
+                <path id="flow-1a" pathLength="1" d="M545 144 Q543 165 545 185" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <path id="flow-1b" pathLength="1" d="M1105 144 Q1107 165 1105 185" class="ink draw" marker-end="url(#arrow-ink)"/>
+
+                <g id="studio" class="node-hit" data-cat="build" tabindex="-1" role="button" aria-label="Details for Copilot Studio">
+                  <path d="M300 193 Q545 187 790 192 L787 260 Q545 266 302 262 Z" class="fill-violet"/>
+                  <path pathLength="1" d="M300 193 Q545 187 790 192 L787 260 Q545 266 302 262 Z" class="violet draw"/>
+                  <g class="label">
+                    <text x="545" y="224" text-anchor="middle" class="svg-product">Copilot Studio</text>
+                    <text x="545" y="248" text-anchor="middle" class="svg-small">low-code path for makers and business teams</text>
+                  </g>
+                </g>
+
+                <g class="label"><text x="825" y="230" text-anchor="middle" class="svg-hand">and / or</text></g>
+
+                <g id="foundry" class="node-hit" data-cat="build" tabindex="-1" role="button" aria-label="Details for Microsoft Foundry">
+                  <path d="M860 193 Q1105 187 1350 192 L1347 260 Q1105 266 862 262 Z" class="fill-violet"/>
+                  <path pathLength="1" d="M860 193 Q1105 187 1350 192 L1347 260 Q1105 266 862 262 Z" class="violet draw"/>
+                  <g class="label">
+                    <text x="1105" y="224" text-anchor="middle" class="svg-product">Microsoft Foundry</text>
+                    <text x="1105" y="248" text-anchor="middle" class="svg-small">pro-code path for engineering teams</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Band 3 · how agents connect safely -->
+              <g data-step="2" class="reveal" aria-label="How agents connect safely">
+                <g class="label">
+                  <text x="30" y="348" class="svg-band">HOW AGENTS</text>
+                  <text x="30" y="364" class="svg-band">CONNECT SAFELY</text>
+                </g>
+                <path id="flow-2a" pathLength="1" d="M545 264 Q543 286 545 305" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <path id="flow-2b" pathLength="1" d="M1105 264 Q1107 286 1105 305" class="ink draw" marker-end="url(#arrow-ink)"/>
+
+                <path d="M280 311 Q840 304 1400 310 L1396 398 Q840 406 282 400 Z" class="fill-blue" opacity=".38"/>
+                <path d="M280 311 Q840 304 1400 310 L1396 398 Q840 406 282 400 Z" class="blue dash-blue fade-in"/>
+                <g class="label"><text x="298" y="328" class="svg-tiny" fill="var(--art-blue)">SHARED ENTERPRISE CONNECTION + ACCESS</text></g>
+
+                <g id="apim" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for API Management">
+                  <path d="M290 337 Q420 331 550 336 L547 390 Q420 396 292 392 Z" class="node-fill"/>
+                  <path pathLength="1" d="M290 337 Q420 331 550 336 L547 390 Q420 396 292 392 Z" class="blue draw"/>
+                  <g class="label">
+                    <text x="420" y="360" text-anchor="middle" class="svg-chip">API Management</text>
+                    <text x="420" y="380" text-anchor="middle" class="svg-tiny">optional gateway for API + MCP tools</text>
+                  </g>
+                </g>
+
+                <g id="connectors" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for built-in tools and connectors">
+                  <path d="M570 337 Q700 331 830 336 L827 390 Q700 396 572 392 Z" class="node-fill"/>
+                  <path pathLength="1" d="M570 337 Q700 331 830 336 L827 390 Q700 396 572 392 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="700" y="360" text-anchor="middle" class="svg-chip">Built-in tools + connectors</text>
+                    <text x="700" y="380" text-anchor="middle" class="svg-tiny">platform-provided ways to take action</text>
+                  </g>
+                </g>
+
+                <g id="logicApps" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for Logic Apps">
+                  <path d="M850 337 Q980 331 1110 336 L1107 390 Q980 396 852 392 Z" class="node-fill"/>
+                  <path pathLength="1" d="M850 337 Q980 331 1110 336 L1107 390 Q980 396 852 392 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="980" y="360" text-anchor="middle" class="svg-chip">Logic Apps</text>
+                    <text x="980" y="380" text-anchor="middle" class="svg-tiny">workflows offered as agent tools</text>
+                  </g>
+                </g>
+
+                <g id="apiCenter" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for API Center">
+                  <path d="M1130 337 Q1260 331 1390 336 L1387 390 Q1260 396 1132 392 Z" class="node-fill"/>
+                  <path pathLength="1" d="M1130 337 Q1260 331 1390 336 L1387 390 Q1260 396 1132 392 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="1260" y="360" text-anchor="middle" class="svg-chip">API Center</text>
+                    <text x="1260" y="380" text-anchor="middle" class="svg-tiny">design-time catalog · not runtime</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Band 4 · what agents can use -->
+              <g data-step="3" class="reveal" aria-label="What agents can use">
+                <g class="label">
+                  <text x="30" y="452" class="svg-band">WHAT AGENTS</text>
+                  <text x="30" y="468" class="svg-band">CAN USE</text>
+                </g>
+                <path id="flow-3a" pathLength="1" d="M420 402 Q418 414 420 423" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <path id="flow-3b" pathLength="1" d="M700 402 Q698 414 700 423" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <path id="flow-3opt" d="M420 402 Q418 414 420 423" class="blue dash-blue fade-in" marker-end="url(#arrow-blue)"/>
+                <g class="label"><text x="434" y="418" class="svg-tiny">only traffic that crosses it</text></g>
+
+                <g id="entApis" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for enterprise APIs and MCP servers">
+                  <path d="M290 431 Q420 425 550 430 L547 494 Q420 500 292 496 Z" class="node-fill"/>
+                  <path pathLength="1" d="M290 431 Q420 425 550 430 L547 494 Q420 500 292 496 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="420" y="454" text-anchor="middle" class="svg-chip">Enterprise APIs</text>
+                    <text x="420" y="472" text-anchor="middle" class="svg-chip">+ MCP servers</text>
+                    <text x="420" y="489" text-anchor="middle" class="svg-tiny">your systems, exposed as tools</text>
+                  </g>
+                </g>
+
+                <g id="fabricIq" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Fabric IQ and the data agent">
+                  <path d="M570 431 Q700 425 830 430 L827 494 Q700 500 572 496 Z" class="node-fill"/>
+                  <path pathLength="1" d="M570 431 Q700 425 830 430 L827 494 Q700 500 572 496 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="700" y="454" text-anchor="middle" class="svg-chip">Fabric IQ</text>
+                    <text x="700" y="472" text-anchor="middle" class="svg-chip">+ data agent</text>
+                    <text x="700" y="489" text-anchor="middle" class="svg-tiny">ask business data questions</text>
+                  </g>
+                </g>
+
+                <g id="externalAgents" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for external agents">
+                  <path d="M850 431 Q980 425 1110 430 L1107 494 Q980 500 852 496 Z" class="node-fill"/>
+                  <path pathLength="1" d="M850 431 Q980 425 1110 430 L1107 494 Q980 500 852 496 Z" class="ink draw"/>
+                  <g class="label">
+                    <text x="980" y="454" text-anchor="middle" class="svg-chip">External agents</text>
+                    <text x="980" y="472" text-anchor="middle" class="svg-chip">A2A or integration</text>
+                    <text x="980" y="489" text-anchor="middle" class="svg-tiny">agents you do not host</text>
+                  </g>
+                </g>
+
+                <g id="models" class="node-hit" data-cat="build" tabindex="-1" role="button" aria-label="Details for model access and choice">
+                  <path d="M1130 431 Q1260 425 1390 430 L1387 494 Q1260 500 1132 496 Z" class="fill-violet"/>
+                  <path pathLength="1" d="M1130 431 Q1260 425 1390 430 L1387 494 Q1260 500 1132 496 Z" class="violet draw"/>
+                  <g class="label">
+                    <text x="1260" y="454" text-anchor="middle" class="svg-chip">Model access</text>
+                    <text x="1260" y="472" text-anchor="middle" class="svg-chip">+ choice</text>
+                    <text x="1260" y="489" text-anchor="middle" class="svg-tiny">Microsoft · Google · AWS · more</text>
+                  </g>
+                </g>
+
+                <g id="monitor" class="node-hit" data-cat="ops" tabindex="-1" role="button" aria-label="Details for operations telemetry">
+                  <path d="M900 509 Q1150 503 1400 508 L1396 540 Q1150 546 902 542 Z" class="fill-slate"/>
+                  <path d="M900 509 Q1150 503 1400 508 L1396 540 Q1150 546 902 542 Z" class="telemetry dot-gray fade-in"/>
+                  <g class="label">
+                    <text x="1150" y="529" text-anchor="middle" class="svg-tiny">Operations telemetry · Monitor + App Insights · Foundry traces · APIM token metrics</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Band 5 · where trusted business data lives -->
+              <g data-step="4" class="reveal" aria-label="Where trusted business data lives">
+                <g class="label">
+                  <text x="30" y="612" class="svg-band">WHERE TRUSTED</text>
+                  <text x="30" y="628" class="svg-band">BUSINESS DATA</text>
+                  <text x="30" y="644" class="svg-band">LIVES</text>
+                </g>
+                <path id="flow-4" pathLength="1" d="M700 498 Q698 540 700 583" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <g class="label"><text x="716" y="528" class="svg-tiny">under the caller's permissions</text></g>
+
+                <g id="purview" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Microsoft Purview">
+                  <path d="M280 555 Q840 548 1400 554 L1396 686 Q840 694 282 688 Z" class="fill-violet" opacity=".3"/>
+                  <path d="M280 555 Q840 548 1400 554 L1396 686 Q840 694 282 688 Z" class="violet dash-violet fade-in"/>
+                  <g class="label"><text x="298" y="574" class="svg-tiny" fill="var(--art-violet)">Microsoft Purview · governance scope, not a request hop</text></g>
+                </g>
+
+                <g id="snowflake" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Snowflake">
+                  <path d="M300 593 Q385 587 470 592 L467 662 Q385 668 302 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M300 593 Q385 587 470 592 L467 662 Q385 668 302 664 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="385" y="624" text-anchor="middle" class="svg-chip">Snowflake</text>
+                    <text x="385" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
+                  </g>
+                </g>
+
+                <path pathLength="1" d="M474 628 Q497 622 516 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
+
+                <g id="fabric" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Microsoft Fabric and OneLake">
+                  <path d="M520 593 Q700 587 880 592 L877 662 Q700 668 522 664 Z" class="fill-green"/>
+                  <path pathLength="1" d="M520 593 Q700 587 880 592 L877 662 Q700 668 522 664 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="700" y="618" text-anchor="middle" class="svg-product">Microsoft Fabric · OneLake</text>
+                    <text x="700" y="640" text-anchor="middle" class="svg-small">promoted governed data foundation</text>
+                    <text x="700" y="657" text-anchor="middle" class="svg-tiny">unify and activate where it helps</text>
+                  </g>
+                </g>
+
+                <path pathLength="1" d="M884 628 Q907 622 926 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
+
+                <g id="databricks" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Databricks">
+                  <path d="M930 593 Q1015 587 1100 592 L1097 662 Q1015 668 932 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M930 593 Q1015 587 1100 592 L1097 662 Q1015 668 932 664 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="1015" y="624" text-anchor="middle" class="svg-chip">Databricks</text>
+                    <text x="1015" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
+                  </g>
+                </g>
+
+                <g id="businessSystems" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for business systems of record">
+                  <path d="M1120 593 Q1260 587 1400 592 L1397 662 Q1260 668 1122 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M1120 593 Q1260 587 1400 592 L1397 662 Q1260 668 1122 664 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="1260" y="616" text-anchor="middle" class="svg-chip">Business systems of record</text>
+                    <text x="1260" y="638" text-anchor="middle" class="svg-tiny">SAP · Salesforce · SQL · Excel</text>
+                    <text x="1260" y="655" text-anchor="middle" class="svg-tiny">PTC · Siemens · and more</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Agent 365 estate rail -->
+              <g data-step="5" class="reveal" aria-label="Microsoft Agent 365 estate governance">
+                <g id="agent365" class="node-hit" data-cat="gov" tabindex="-1" role="button" aria-label="Details for Microsoft Agent 365">
+                  <rect x="280" y="10" width="1120" height="52" fill="none" pointer-events="all"/>
+                  <path pathLength="1" d="M282 60 Q276 36 281 14 Q840 6 1399 14 Q1394 36 1398 60" class="violet draw"/>
+                  <g class="label">
+                    <text x="840" y="38" text-anchor="middle" class="svg-title">Microsoft Agent 365</text>
+                    <text x="840" y="56" text-anchor="middle" class="svg-small">estate-level observe · govern · secure across Microsoft + connected AWS / Google agents — scope, not a request path.</text>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Handoff close -->
+              <g data-step="6" class="reveal" aria-label="Handoff to the Board 1 value loop">
+                <g id="handoff" class="node-hit" data-cat="value" tabindex="-1" role="button" aria-label="Details for the handoff back to Board 1">
+                  <path d="M420 695 Q840 689 1260 694 L1257 712 Q840 718 422 714 Z" class="fill-amber"/>
+                  <path pathLength="1" d="M420 695 Q840 689 1260 694 L1257 712 Q840 718 422 714 Z" class="amber draw"/>
+                  <g class="label">
+                    <text x="840" y="709" text-anchor="middle" class="svg-hand amber-text">Hand back to Board 1 — make this measurable: baseline, adoption, validated impact.</text>
+                  </g>
+                </g>
+              </g>
+
+              <g id="route-overlay" aria-hidden="true"></g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <div class="legend" aria-label="Whiteboard line legend">
+        <span class="legend-item" data-legend-step="0"><i class="legend-line"></i>how the layers connect</span>
+        <span class="legend-item" data-legend-step="0"><i class="legend-line ink-dot"></i>preview relationship · not a request path</span>
+        <span class="legend-item" data-legend-step="2"><i class="legend-line blue"></i>shared connection + access band</span>
+        <span class="legend-item" data-legend-step="3"><i class="legend-line gray"></i>operations telemetry</span>
+        <span class="legend-item" data-legend-step="4"><i class="legend-line green"></i>data platforms interoperate</span>
+        <span class="legend-item" data-legend-step="4"><i class="legend-line violet"></i>governance scope · not a request hop</span>
+        <span class="legend-item" data-legend-step="6"><i class="legend-line amber"></i>handoff to the Board 1 value loop</span>
+      </div>
+
+      <div class="presenter-controls" aria-label="Presenter controls">
+        <button class="control" id="back" type="button" disabled>Back</button>
+        <div class="stepper" aria-label="Drawing progress">
+          <button class="step-mark" type="button" data-goto="0" aria-label="Go to step 0" aria-current="step">0</button>
+          <button class="step-mark" type="button" data-goto="1" aria-label="Go to step 1">1</button>
+          <button class="step-mark" type="button" data-goto="2" aria-label="Go to step 2">2</button>
+          <button class="step-mark" type="button" data-goto="3" aria-label="Go to step 3">3</button>
+          <button class="step-mark" type="button" data-goto="4" aria-label="Go to step 4">4</button>
+          <button class="step-mark" type="button" data-goto="5" aria-label="Go to step 5">5</button>
+          <button class="step-mark" type="button" data-goto="6" aria-label="Go to step 6">6</button>
+          <span class="step-status" id="step-status" aria-live="polite">Step 0 of 6. Where work happens.</span>
+        </div>
+        <div class="control-cluster">
+          <button class="control primary" id="next" type="button">Start drawing</button>
+          <button class="control text" id="reset" type="button">Reset</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="detail-drawer" id="drawer" aria-labelledby="drawer-title" aria-hidden="true">
+    <button class="drawer-close" id="drawer-close" type="button" aria-label="Close details">×</button>
+    <p class="drawer-kicker" id="drawer-kicker">Board detail</p>
+    <h2 id="drawer-title">Details</h2>
+
+    <div id="node-detail">
+      <div class="detail-row"><h3>Role</h3><p id="drawer-role"></p></div>
+      <div class="detail-row"><h3>Why it appears</h3><p id="drawer-why"></p></div>
+      <div class="detail-row"><h3>Accurate caveat</h3><p id="drawer-caveat"></p></div>
+    </div>
+
+    <div id="question-detail" hidden>
+      <p class="answer-head">By responsibility</p>
+      <ol class="answer-list" id="answer-list"></ol>
+      <div class="detail-row"><h3>Stay accurate</h3><p id="answer-caveat"></p></div>
+    </div>
+
+    <div class="secondary-note" id="secondary-note" hidden></div>
+    <button class="clear-focus" id="clear-focus" type="button" hidden>Clear question focus</button>
+  </aside>
+
+  <script>
+    const details = {
+      m365: { title: "Microsoft 365 Copilot", role: "The everyday work surface where employees already are: chat, documents, meetings, and agents in the flow of work.", why: "The story starts where work happens, not with a platform diagram.", caveat: "It is a companion work surface, not a required first step for every agent." },
+      github: { title: "GitHub Copilot", role: "The developer work surface for code, review, and engineering tasks.", why: "Developers are a first-class agent audience alongside business users.", caveat: "It is a work surface, not an architecture runtime for business agents." },
+      scout: { title: "Scout (preview)", role: "A preview experience that pairs the employee and developer work surfaces.", why: "Customers ask how the two Copilot surfaces relate to each other.", caveat: "Scout preview — paired Microsoft 365 Copilot + GitHub Copilot Business/Enterprise entitlement. It is drawn as a relationship, not a runtime, and no request path is implied." },
+      studio: { title: "Copilot Studio", role: "Low-code path for agents and agent flows, with native Power Platform connector tools plus MCP and API integration.", why: "Makers and business teams can ship governed agents without pro-code delivery.", caveat: "Use it on its own or alongside Foundry. It is not a lesser step before Foundry, and not every connector crosses an API Management boundary." },
+      foundry: { title: "Microsoft Foundry", role: "Pro-code agent platform: tools and toolboxes, API, MCP, Fabric IQ, and A2A integration, plus evaluation, deployment, and tracing.", why: "Engineering teams need control over models, tool lifecycle, evaluation, and traces.", caveat: "Use it on its own or alongside Copilot Studio; this is not a forced fork. Some capabilities are preview." },
+      connectors: { title: "Built-in tools + connectors", role: "Copilot Studio connector actions and agent tools, plus Foundry-provided tools and toolboxes, give builders supported ways to take action.", why: "Start with supported capabilities before creating a custom integration.", caveat: "These are not one shared connector catalog. Each platform has its own supported tool types, connections, and authorization model." },
+      logicApps: { title: "Logic Apps", role: "Deterministic workflows and connector actions offered to agents as reusable tools.", why: "Some steps should stay deterministic, retryable, and auditable.", caveat: "It is a workflow and tool provider, not a peer agent runtime." },
+      apiCenter: { title: "API Center", role: "Design-time registration, catalog, and discovery for API and MCP assets.", why: "Builders should find approved capabilities before they write integration code.", caveat: "It is design time only. It is not a runtime hop, and no API Management request flow into it is implied." },
+      apim: { title: "API Management · AI Gateway", role: "Optional managed boundary for enterprise APIs and MCP tools that can apply policy, authentication, rate and token limits, and token metrics.", why: "Where representative API or MCP traffic crosses it, central control and cost signal become possible before an agent reaches an enterprise capability.", caveat: "It is optional and applies only to traffic that crosses it. It is not a universal gateway for every agent call or a required hop for platform-provided tools." },
+      entApis: { title: "Enterprise APIs + MCP servers", role: "Your own systems exposed to agents as reusable, approved tools.", why: "It separates approved enterprise capability from platform-native tooling.", caveat: "Reuse depends on ownership and lifecycle; exposing an endpoint is not governance." },
+      fabricIq: { title: "Fabric IQ + data agent", role: "A capability an agent can call to answer natural-language questions over business data.", why: "Most useful agent questions end in data the business already trusts.", caveat: "The agent delegates under the caller's identity and permissions. It is a capability, not a universal data gateway. Some capabilities are preview." },
+      externalAgents: { title: "External agents", role: "Agents you do not host, reached through A2A collaboration or a purpose-built integration.", why: "Real estates include partner, ISV, SaaS, and third-party agents.", caveat: "External agents can be registered in Foundry for telemetry, traces, and evaluation; registration does not host, proxy, or invoke their runtime. Agent 365 can synchronize supported external platforms, including Amazon Bedrock and Google Vertex AI, into its registry; do not assume automatic coverage for every platform." },
+      models: { title: "Model access + choice", role: "Choose the model and quality target that fit each task, including Microsoft, Google, AWS, and other providers through the integration pattern that fits.", why: "Cost, latency, and quality are decided here, before any gateway measures them.", caveat: "API Management AI Gateway can provide one governed endpoint for configured Foundry, AWS Bedrock, Google Vertex, OpenAI, Anthropic, or custom model backends. A cheaper model or lower token count does not by itself prove quality or return." },
+      monitor: { title: "Operations telemetry", role: "Azure Monitor and Application Insights dashboards and alerts, Foundry evaluation and traces, and API Management token metrics.", why: "Operations needs actionable signals from participating runtimes and managed traffic.", caveat: "Coverage follows what is instrumented and what crosses managed boundaries. Operational telemetry is not business impact." },
+      purview: { title: "Microsoft Purview", role: "Governance scope for classification, protection, risk, and compliance across the data estate.", why: "The data band needs enterprise governance rather than per-source improvisation.", caveat: "It is a scope around this data, not a request hop. Sources retain their native controls." },
+      fabric: { title: "Microsoft Fabric + OneLake", role: "Promoted Microsoft governed data foundation for analytics and AI.", why: "It gives the enterprise a prominent Microsoft foundation while allowing coexistence.", caveat: "It does not require replacing, replicating, or universally virtualizing existing data." },
+      snowflake: { title: "Snowflake", role: "A coexisting external data platform that may remain authoritative.", why: "The board reflects a real, heterogeneous data estate.", caveat: "Interoperation is estate-specific and preserves source-native controls." },
+      databricks: { title: "Databricks", role: "A coexisting external data and AI platform.", why: "A Microsoft foundation should not erase existing customer investments.", caveat: "The connection pattern is customer-specific; replacement or mandatory replication is not implied." },
+      businessSystems: { title: "Business systems of record", role: "Operational systems that hold the business context an agent needs, such as SAP, Salesforce, SQL, Excel, PTC, and Siemens.", why: "Useful agents need the right context from the systems the business already relies on, not a forced data-migration project.", caveat: "These sources remain authoritative. Reach them through the appropriate approved connector, API, MCP server, or data pattern, with the source system's identity and permissions preserved." },
+      agent365: { title: "Microsoft Agent 365", role: "Estate-level inventory, ownership, and observe, govern, and secure capabilities across Microsoft and connected external agents.", why: "Leaders need one place to see and control the agent estate, including supported Amazon Bedrock and Google Vertex AI agents, revealed after the runtime story is understood.", caveat: "It is a scope, not a request path. External agents can synchronize to the registry and use supported SDK or OpenTelemetry integration for deeper observability, but coverage and controls depend on the supported connection—not every external platform is automatic." },
+      handoff: { title: "Hand back to Board 1", role: "Connects this architecture to the measurable value loop that Board 1 owns.", why: "Architecture is only worth funding when it makes an outcome measurable.", caveat: "Board 1 owns the business opportunity and value evidence; this board stops at making that loop measurable." },
+      opportunity: { title: "Concrete work opportunity", role: "A named job, friction, accountable owner, and measurable baseline.", why: "It stops the conversation from becoming an unbounded product-first pilot.", caveat: "A broad AI aspiration is not yet a testable opportunity." },
+      pattern: { title: "Choose the right agentic pattern", role: "Match the work to an assistive copilot, a bounded agent with a deterministic workflow, or more autonomous orchestration only when justified.", why: "Most customer conversations are agent-forward, but the safe and valuable amount of autonomy varies by process.", caveat: "An agent is not automatically the right tool for every step; retain approval and deterministic automation where they improve control." },
+      evidence: { title: "Value evidence", role: "Combines quality, adoption, cost, business-system KPIs, and owner validation.", why: "It distinguishes a promising technical pilot from a measurable business return.", caveat: "Telemetry and token counts inform the picture; neither alone proves value." },
+      valueDecision: { title: "Scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
+      hypothesis: { title: "Outcome hypothesis", role: "A testable claim about the work and result expected to change.", why: "It makes value falsifiable before technology work expands.", caveat: "A broad aspiration without an owner or measure is not yet a useful hypothesis." },
+      baseline: { title: "Baseline", role: "The agreed current-state measure before intervention.", why: "It creates a comparison point for later validation.", caveat: "Instrumenting the solution after launch cannot reliably recreate every baseline." },
+      adoption: { title: "Adoption + process change", role: "Behavior, workflow, and accountability changes required to realize value.", why: "Deployment alone rarely changes business performance.", caveat: "Usage volume is not sufficient evidence that the process improved." },
+      impact: { title: "Validated business impact", role: "Triangulates operational telemetry, business-system KPIs, and owner validation.", why: "It separates observed technical activity from an accountable business result.", caveat: "Telemetry enters validation as one evidence source; it does not flow directly into ROI." },
+      scale: { title: "Scale / adjust / stop", role: "An executive decision based on validated evidence.", why: "A disciplined loop funds what works, changes what might work, and stops what does not.", caveat: "Scale is not the automatic next step; adjust or stop are valid outcomes." }
+    };
+
+    const questions = {
+      govern: {
+        label: "How do we govern this?",
+        min: 5,
+        focus: ["agent365", "apiCenter", "apim", "purview"],
+        route: [
+          { node: "agent365", cat: "gov", anchor: "downLeft", layer: "Estate governance", chip: "Microsoft Agent 365", text: "See every agent, who owns it, and apply estate-level observe, govern, and secure controls." },
+          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "Register and catalog the APIs and MCP servers builders are allowed to reuse." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Policy, authentication, and limits on the traffic that actually crosses it." },
+          { node: "purview", cat: "data", anchor: "left", layer: "Data governance", chip: "Microsoft Purview", text: "Classification, protection, and compliance scope around the data estate." }
+        ],
+        caveat: "Governance is layered rather than one product. Agent 365 is a scope, not a request path; sources keep their native controls; and each layer can be adopted on its own."
+      },
+      cost: {
+        label: "How do we manage cost and tokens?",
+        min: 6,
+        focus: ["models", "foundry", "apim", "monitor", "handoff", "flow-3opt"],
+        route: [
+          { node: "models", cat: "build", layer: "Build", chip: "Model access + choice", text: "Match model, quality target, and task before optimizing anything else." },
+          { node: "foundry", cat: "build", layer: "Build", chip: "Microsoft Foundry", text: "Evaluate quality against cost and trace what each agent run actually does." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Rate and token limits plus token metrics for the traffic that crosses it." },
+          { node: "monitor", cat: "ops", anchor: "left", layer: "Operations", chip: "Monitor + App Insights", text: "Dashboards and alerts over the telemetry participating runtimes emit." },
+          { node: "handoff", cat: "value", anchor: "left", layer: "Value", chip: "Board 1 value loop", text: "Judge cost per successful outcome, then scale, adjust, or stop." }
+        ],
+        caveat: "API Management measures only managed traffic, and Fabric, Purview, and Agent 365 are not token meters. A lower token count is not proof of quality or return."
+      },
+      connect: {
+        label: "How do we connect safely?",
+        min: 3,
+        focus: ["apiCenter", "connectors", "logicApps", "apim", "entApis", "flow-2a", "flow-2b", "flow-3a", "flow-3opt"],
+        route: [
+          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "Builders start from an approved catalog instead of ad-hoc endpoints." },
+          { node: "connectors", cat: "access", layer: "Connection", chip: "Approved connectors", text: "Governed, identity-aware connections to the systems you already run." },
+          { node: "logicApps", cat: "access", layer: "Workflow", chip: "Logic Apps", text: "Deterministic workflows and connector actions offered to agents as tools." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Optional policy, authentication, and limits on the path toward capabilities." },
+          { node: "entApis", cat: "access", layer: "Capabilities", chip: "Enterprise APIs + MCP", text: "The agent only reaches what this shared layer has approved." }
+        ],
+        caveat: "There is no universal gateway. Not every call crosses API Management, and Logic Apps is a workflow and tool provider rather than a peer agent runtime."
+      },
+      data: {
+        label: "How do we use trusted data?",
+        min: 4,
+        focus: ["fabricIq", "fabric", "purview", "businessSystems", "flow-4"],
+        route: [
+          { node: "fabricIq", cat: "data", layer: "Capability", chip: "Fabric IQ + data agent", text: "An agent can delegate natural-language data questions under the caller's identity and permissions." },
+          { node: "businessSystems", cat: "data", layer: "Business context", chip: "Business systems of record", text: "Bring in the relevant context from systems such as SAP, Salesforce, SQL, Excel, PTC, and Siemens without requiring a wholesale move first." },
+          { node: "fabric", cat: "data", layer: "Foundation", chip: "Microsoft Fabric · OneLake", text: "The promoted governed foundation for analytics and AI data." },
+          { node: "purview", cat: "data", anchor: "left", layer: "Governance", chip: "Microsoft Purview", text: "Classification, protection, and compliance scope around that data." }
+        ],
+        caveat: "Fabric IQ is a capability an agent can use, not a universal data gateway. Permissions still come from the data platform, and Purview is a scope rather than a request hop."
+      },
+      platforms: {
+        label: "Can we use our existing platforms?",
+        min: 4,
+        focus: ["connectors", "externalAgents", "snowflake", "databricks", "fabric", "businessSystems"],
+        route: [
+          { node: "connectors", cat: "access", layer: "Connection", chip: "Built-in tools + connectors", text: "Use the supported tool, connector, API, or MCP pattern to reach the systems you already run." },
+          { node: "externalAgents", cat: "access", layer: "Collaboration", chip: "External agents", text: "Work with agents you do not host through A2A or a purpose-built integration." },
+          { node: "businessSystems", cat: "data", layer: "Systems of record", chip: "Business systems of record", text: "Keep SAP, Salesforce, SQL, Excel, PTC, Siemens, and similar systems authoritative while connecting the relevant context." },
+          { node: "snowflake", cat: "data", layer: "Coexistence", chip: "Snowflake", text: "Can remain authoritative for the data it already owns." },
+          { node: "databricks", cat: "data", layer: "Coexistence", chip: "Databricks", text: "Coexists as a data and AI platform; nothing is forced to move." },
+          { node: "fabric", cat: "data", layer: "Foundation", chip: "Microsoft Fabric · OneLake", text: "Promoted where unification helps — coexist and interoperate, not rip and replace." }
+        ],
+        caveat: "External agents can be registered in Foundry for traces and evaluation; registration does not host, proxy, or invoke their runtime. No migration, replication, or universal virtualization is implied, and Agent 365 coverage of every external platform should not be assumed."
+      },
+      existingAgents: {
+        label: "How do we use the agents we already have?",
+        min: 5,
+        focus: ["studio", "foundry", "externalAgents", "monitor", "agent365"],
+        route: [
+          { node: "externalAgents", cat: "access", layer: "Existing specialist", chip: "External agents", text: "Keep a SaaS or partner agent in the platform where it is expert, then use a supported integration when it needs to collaborate." },
+          { node: "studio", cat: "build", layer: "Orchestration", chip: "Copilot Studio", text: "Bring a connected agent capability into a broader business process and work experience." },
+          { node: "foundry", cat: "build", layer: "Orchestration + technical evidence", chip: "Microsoft Foundry", text: "Call a compatible A2A agent and, when it is instrumented, register an external agent for traces and trace-based evaluation." },
+          { node: "monitor", cat: "ops", anchor: "left", layer: "Operations", chip: "Monitor + App Insights", text: "See the participating runtime telemetry and investigate latency, failures, and tool activity." },
+          { node: "agent365", cat: "gov", anchor: "downLeft", layer: "Estate governance", chip: "Microsoft Agent 365", text: "Synchronize supported external agents—including Amazon Bedrock and Google Vertex AI—into the broader inventory, ownership, lifecycle, and governance view." }
+        ],
+        caveat: "Integration and visibility are separate decisions. Foundry registration stores metadata and receives OpenTelemetry traces; it does not host, proxy, or invoke the SaaS runtime. Agent 365 supports registry synchronization for Amazon Bedrock and Google Vertex AI, but coverage depends on the supported connection and should not be assumed for every vendor."
+      },
+      discover: {
+        label: "How do builders find approved tools?",
+        min: 3,
+        focus: ["apiCenter", "connectors", "entApis", "studio", "foundry", "flow-2a", "flow-2b"],
+        route: [
+          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "The catalog where approved APIs and MCP servers are registered and discovered." },
+          { node: "connectors", cat: "access", layer: "Platform tools", chip: "Built-in tools + connectors", text: "Start with supported connector actions, agent tools, and toolboxes before creating a custom integration." },
+          { node: "entApis", cat: "access", layer: "Capabilities", chip: "Enterprise APIs + MCP", text: "The reusable capability set an agent is actually allowed to call." }
+        ],
+        caveat: "API Center is design time only. It is not a runtime hop, and no request flows from API Management into it."
+      }
+    };
+
+    const stepCopy = [
+      "Step 0 of 6. Where work happens.",
+      "Step 1 of 6. Where agents are built.",
+      "Step 2 of 6. How agents connect safely.",
+      "Step 3 of 6. What agents can use.",
+      "Step 4 of 6. Where trusted business data lives.",
+      "Step 5 of 6. Agent 365 estate governance.",
+      "Step 6 of 6. Handoff to the business case."
+    ];
+
+    const phaseCopy = [
+      "Start where the work already happens.",
+      "Build with low-code, pro-code, or both.",
+      "Connect it to the business through one approved layer.",
+      "Give it only the capabilities it is allowed to use.",
+      "Point it at business data people already trust.",
+      "See and govern every agent across the estate.",
+      "Hand the result back to the business case."
+    ];
+
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const body = document.body;
+    const boardTabs = [...document.querySelectorAll(".board-tab")];
+    const boardPanels = [...document.querySelectorAll(".board-panel")];
+    const architectureDeck = document.getElementById("architecture-deck");
+    const boardThesis = document.getElementById("board-thesis");
+    const boardCue = document.getElementById("board-cue");
+    const continueToArchitecture = document.getElementById("continue-to-architecture");
+    const phaseCue = document.getElementById("phase-cue");
+    const phaseText = document.getElementById("phase-text");
+    const reveals = [...document.querySelectorAll("[data-step]")];
+    const marks = [...document.querySelectorAll("[data-goto]")];
+    const prompts = [...document.querySelectorAll("[data-question]")];
+    const nodeHits = [...document.querySelectorAll(".node-hit")];
+    const legends = [...document.querySelectorAll("[data-legend-step]")];
+    const routeOverlay = document.getElementById("route-overlay");
+    const nodeDetail = document.getElementById("node-detail");
+    const questionDetail = document.getElementById("question-detail");
+    const answerList = document.getElementById("answer-list");
+    const answerCaveat = document.getElementById("answer-caveat");
+    const back = document.getElementById("back");
+    const next = document.getElementById("next");
+    const reset = document.getElementById("reset");
+    const status = document.getElementById("step-status");
+    const drawer = document.getElementById("drawer");
+    const drawerClose = document.getElementById("drawer-close");
+    const clearFocusButton = document.getElementById("clear-focus");
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let currentStep = 0;
+    let activeQuestion = null;
+    let lastTrigger = null;
+    let phaseTimer = null;
+
+    function updateBoard(name) {
+      const architecture = name === "architecture";
+      if (drawer.classList.contains("is-open")) closeDetails();
+      body.dataset.board = architecture ? "architecture" : "opportunity";
+      boardPanels.forEach(panel => {
+        const active = panel.id === `board-${name}`;
+        panel.classList.toggle("is-active", active);
+        panel.toggleAttribute("hidden", !active);
+      });
+      boardTabs.forEach(tab => tab.setAttribute("aria-selected", String(tab.id === `board-${name}-tab`)));
+      architectureDeck.hidden = !architecture;
+      boardThesis.innerHTML = architecture
+        ? "<strong>Start with the use case.</strong> Add only the capabilities needed to make it connected, governed, and measurable."
+        : "<strong>From agent opportunity to measurable business value.</strong> Start with the work, then design only the capabilities required to scale it.";
+      boardCue.textContent = architecture
+        ? "How the enterprise agent story fits together"
+        : "Start with the work, not the stack.";
+      if (!architecture) clearFocus(true);
+    }
+
+    function hashStep() {
+      const match = location.hash.match(/^#step=([0-6])$/);
+      return match ? Number(match[1]) : 0;
+    }
+
+    function renderRoute(question) {
+      routeOverlay.textContent = "";
+      if (!question) return;
+      question.route.forEach((entry, index) => {
+        const node = document.getElementById(entry.node);
+        if (!node) return;
+        let box;
+        try { box = node.getBBox(); } catch { return; }
+        let x = box.x - 4;
+        let y = box.y - 4;
+        if (entry.anchor === "left") { x = box.x - 20; y = box.y + box.height / 2; }
+        if (entry.anchor === "downLeft") { x = box.x - 4; y = box.y + 10; }
+        const group = document.createElementNS(SVG_NS, "g");
+        group.setAttribute("transform", `translate(${Math.round(x)} ${Math.round(y)})`);
+        const circle = document.createElementNS(SVG_NS, "circle");
+        circle.setAttribute("r", "13");
+        circle.setAttribute("class", `route-badge cat-${entry.cat}`);
+        const label = document.createElementNS(SVG_NS, "text");
+        label.setAttribute("y", "4");
+        label.setAttribute("class", "route-number");
+        label.textContent = String(index + 1);
+        group.append(circle, label);
+        routeOverlay.append(group);
+      });
+    }
+
+    function renderAnswer(question) {
+      answerList.textContent = "";
+      question.route.forEach((entry, index) => {
+        const item = document.createElement("li");
+        item.className = "answer-row";
+        item.dataset.cat = entry.cat;
+        const num = document.createElement("span");
+        num.className = "answer-num";
+        num.textContent = String(index + 1);
+        const bodyWrap = document.createElement("div");
+        const layer = document.createElement("span");
+        layer.className = "answer-layer";
+        layer.textContent = entry.layer;
+        const chip = document.createElement("span");
+        chip.className = "answer-chip";
+        chip.textContent = entry.chip;
+        const text = document.createElement("p");
+        text.textContent = entry.text;
+        bodyWrap.append(layer, chip, text);
+        item.append(num, bodyWrap);
+        answerList.append(item);
+      });
+      answerCaveat.textContent = question.caveat;
+    }
+
+    function clearFocus(closeDrawerToo = false) {
+      activeQuestion = null;
+      body.removeAttribute("data-focus");
+      prompts.forEach(button => button.setAttribute("aria-pressed", "false"));
+      nodeHits.forEach(node => node.classList.remove("is-focused"));
+      document.querySelectorAll(".whiteboard .is-focused").forEach(el => el.classList.remove("is-focused"));
+      renderRoute(null);
+      clearFocusButton.hidden = true;
+      if (closeDrawerToo) closeDetails();
+    }
+
+    function updatePhaseCue(animate) {
+      const nextText = phaseCopy[currentStep];
+      if (phaseText.textContent === nextText) return;
+      clearTimeout(phaseTimer);
+      phaseCue.classList.remove("is-erasing", "is-writing");
+      if (!animate || reducedMotion) {
+        phaseText.textContent = nextText;
+        return;
+      }
+      phaseCue.classList.add("is-erasing");
+      phaseTimer = setTimeout(() => {
+        phaseText.textContent = nextText;
+        phaseCue.classList.remove("is-erasing");
+        phaseCue.classList.add("is-writing");
+        phaseTimer = setTimeout(() => phaseCue.classList.remove("is-writing"), 220);
+      }, 150);
+    }
+
+    function updateStep(step, { animate = true, updateHash = true, keepFocus = false } = {}) {
+      const nextStep = Math.max(0, Math.min(6, step));
+      const goingBack = nextStep < currentStep;
+      if (!animate || goingBack || reducedMotion) body.classList.add("snap");
+      if (!keepFocus) clearFocus(true);
+      currentStep = nextStep;
+      reveals.forEach(group => {
+        const active = Number(group.dataset.step) <= currentStep;
+        group.classList.toggle("is-active", active);
+        group.querySelectorAll(".node-hit").forEach(node => node.setAttribute("tabindex", active ? "0" : "-1"));
+      });
+      legends.forEach(item => item.classList.toggle("is-active", Number(item.dataset.legendStep) <= currentStep));
+      marks.forEach(mark => {
+        const markStep = Number(mark.dataset.goto);
+        mark.classList.toggle("is-complete", markStep < currentStep);
+        mark.toggleAttribute("aria-current", markStep === currentStep);
+        if (markStep === currentStep) mark.setAttribute("aria-current", "step");
+      });
+      back.disabled = currentStep === 0;
+      next.disabled = currentStep === 6;
+      next.textContent = currentStep === 0 ? "Start drawing" : currentStep === 6 ? "Drawing complete" : "Next";
+      status.textContent = stepCopy[currentStep];
+      updatePhaseCue(animate);
+      if (updateHash) {
+        if (currentStep === 0) history.replaceState(null, "", location.pathname + location.search);
+        else history.replaceState(null, "", `#step=${currentStep}`);
+      }
+      requestAnimationFrame(() => body.classList.remove("snap"));
+    }
+
+    function openDrawer(trigger) {
+      lastTrigger = trigger || null;
+      drawer.classList.add("is-open");
+      drawer.setAttribute("aria-hidden", "false");
+      body.classList.add("is-drawer-open");
+      drawerClose.focus({ preventScroll: true });
+    }
+
+    function openDetails(item, kicker, trigger) {
+      document.getElementById("drawer-kicker").textContent = kicker;
+      document.getElementById("drawer-title").textContent = item.title;
+      document.getElementById("drawer-role").textContent = item.role;
+      document.getElementById("drawer-why").textContent = item.why;
+      document.getElementById("drawer-caveat").textContent = item.caveat;
+      nodeDetail.hidden = false;
+      questionDetail.hidden = true;
+      const secondary = document.getElementById("secondary-note");
+      secondary.hidden = !item.secondary;
+      secondary.textContent = item.secondary || "";
+      openDrawer(trigger);
+    }
+
+    function openQuestionDetails(question, trigger) {
+      document.getElementById("drawer-kicker").textContent = "Answering";
+      document.getElementById("drawer-title").textContent = question.label;
+      renderAnswer(question);
+      nodeDetail.hidden = true;
+      questionDetail.hidden = false;
+      const secondary = document.getElementById("secondary-note");
+      secondary.hidden = true;
+      secondary.textContent = "";
+      openDrawer(trigger);
+    }
+
+    function closeDetails() {
+      drawer.classList.remove("is-open");
+      drawer.setAttribute("aria-hidden", "true");
+      body.classList.remove("is-drawer-open");
+      if (body.dataset.focus === "node") {
+        body.removeAttribute("data-focus");
+        nodeHits.forEach(node => node.classList.remove("is-focused"));
+      }
+      if (lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true });
+      lastTrigger = null;
+    }
+
+    function activateQuestion(name, trigger) {
+      const question = questions[name];
+      if (!question) return;
+      if (activeQuestion === name) {
+        clearFocus(true);
+        return;
+      }
+      clearFocus(true);
+      if (currentStep < question.min) updateStep(question.min, { animate: true, keepFocus: true });
+      activeQuestion = name;
+      body.dataset.focus = "question";
+      prompts.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.question === name)));
+      question.focus.forEach(id => document.getElementById(id)?.classList.add("is-focused"));
+      renderRoute(question);
+      clearFocusButton.hidden = false;
+      openQuestionDetails(question, trigger);
+    }
+
+    function focusNode(node) {
+      clearFocus(false);
+      body.dataset.focus = "node";
+      node.classList.add("is-focused");
+    }
+
+    function selectNode(node) {
+      const item = details[node.id];
+      if (!item) return;
+      if (drawer.classList.contains("is-open")) closeDetails();
+      focusNode(node);
+      openDetails(item, "Board detail", node);
+    }
+
+    next.addEventListener("click", () => updateStep(currentStep + 1));
+    back.addEventListener("click", () => updateStep(currentStep - 1));
+    reset.addEventListener("click", () => {
+      closeDetails();
+      updateStep(0, { animate: false });
+      document.getElementById("canvas-scroll").scrollTo({ left: 0, behavior: "auto" });
+    });
+    marks.forEach(mark => mark.addEventListener("click", () => updateStep(Number(mark.dataset.goto))));
+    prompts.forEach(prompt => prompt.addEventListener("click", () => activateQuestion(prompt.dataset.question, prompt)));
+    boardTabs.forEach(tab => tab.addEventListener("click", () => updateBoard(tab.id === "board-architecture-tab" ? "architecture" : "opportunity")));
+    continueToArchitecture.addEventListener("click", () => {
+      updateBoard("architecture");
+      document.getElementById("canvas-scroll").scrollTo({ left: 0, behavior: "smooth" });
+    });
+    nodeHits.forEach(node => {
+      node.addEventListener("click", () => selectNode(node));
+      node.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectNode(node);
+        }
+      });
+    });
+    drawerClose.addEventListener("click", () => {
+      if (activeQuestion) clearFocus(true);
+      else closeDetails();
+    });
+    clearFocusButton.addEventListener("click", () => clearFocus(true));
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape" || !drawer.classList.contains("is-open")) return;
+      if (activeQuestion) clearFocus(true);
+      else closeDetails();
+    });
+
+    const themeToggle = document.getElementById("theme-toggle");
+    function updateThemeLabel() {
+      const dark = document.documentElement.dataset.theme === "dark";
+      themeToggle.textContent = dark ? "Use light board" : "Use dark board";
+      themeToggle.setAttribute("aria-label", dark ? "Switch to light board" : "Switch to dark board");
+    }
+    themeToggle.addEventListener("click", () => {
+      document.documentElement.dataset.theme =
+        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      updateThemeLabel();
+    });
+    updateThemeLabel();
+
+    currentStep = hashStep();
+    updateStep(currentStep, { animate: false, updateHash: false });
+    updateBoard("opportunity");
+    requestAnimationFrame(() => body.classList.remove("initializing"));
+    addEventListener("hashchange", () => updateStep(hashStep(), { animate: false, updateHash: false }));
+  </script>
+</body>
+</html>
