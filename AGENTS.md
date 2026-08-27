@@ -1,10 +1,10 @@
-# Azure AI Story Editing Guide
+# Enterprise Agent Story Editing Guide
 
 ## Artifact and audience
 
 - This is a dependency-free, static GitHub Pages artifact. Keep `index.html` self-contained; do not add a framework, build step, package manager, CDN, telemetry, or external runtime dependency.
-- The audience is Azure sellers and customer teams. The page must explain a business-to-architecture story, not act as a product catalog or reference architecture.
-- Do not add customer names, customer data, credentials, tenant details, screenshots of customer systems, or other sensitive material to the repository.
+- The audience includes business, technical, and decision-making teams. The page must explain a business-to-architecture story, not act as a product catalog or reference architecture.
+- Do not add private organization data, identities, credentials, tenant details, or screenshots of private systems to the repository.
 
 ## Narrative
 
@@ -20,7 +20,7 @@
 
 - Retain the restrained hand-drawn whiteboard style: warm/light board, hand-drawn SVG outlines, progressive drawing, sparse annotation, and stable semantic colors.
 - Do not add product logos, decorative doodles, dense vendor mosaics, or visual effects that compete with the narrative.
-- Keep explanatory microcopy where it helps a live seller conversation; put caveats and detailed technical explanation in the click-through drawer.
+- Keep explanatory microcopy where it helps a live conversation; put caveats and detailed technical explanation in the click-through drawer.
 - Customer-question mode must dim unrelated items, use numbered color-coded routes, and keep the entire focused canvas visible beside the drawer. Do not let the drawer cover a selected node.
 - Respect keyboard navigation, `prefers-reduced-motion`, responsive horizontal panning, and the existing no-resize drawer behavior on mobile.
 
