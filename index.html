@@ -115,32 +115,44 @@
     .title-row {
       display: flex;
       align-items: flex-start;
-      gap: 15px;
+      gap: 12px;
     }
     .marker-cap {
       flex: 0 0 auto;
-      width: 10px;
-      height: 47px;
+      width: 7px;
+      height: 57px;
       margin-top: 2px;
       background: var(--art-violet);
       transform: rotate(-2deg);
     }
+    .title-copy { min-width: 0; }
+    .whiteboard-kicker {
+      margin: 0 0 1px;
+      color: var(--art-muted);
+      font-size: .62rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
     h1 {
       max-width: 960px;
       margin: 0;
-      font-size: clamp(1.5rem, 2.1vw, 2.05rem);
+      font-size: clamp(1.45rem, 2vw, 1.95rem);
       font-weight: 690;
       letter-spacing: -.045em;
       line-height: 1.03;
     }
-    .thesis {
-      max-width: 780px;
-      margin: 5px 0 0 25px;
-      color: var(--art-muted);
-      font-size: .9rem;
-      line-height: 1.42;
+    .title-path {
+      display: block;
+      margin-top: 2px;
+      color: var(--art-violet);
+      font-family: var(--hand);
+      font-size: clamp(.78rem, 1.2vw, .98rem);
+      font-weight: 700;
+      line-height: 1.25;
+      transform: rotate(-.4deg);
     }
-    .thesis strong { color: var(--art-ink); }
+    .title-path span { padding-inline: 3px; font-family: var(--ui); }
     .head-actions {
       display: flex;
       justify-content: flex-end;
@@ -168,12 +180,35 @@
       color: var(--art-violet);
     }
     .seller-cue {
-      margin: 0 auto 0 0;
+      position: relative;
+      max-width: 190px;
+      margin: 4px auto 0 0;
+      padding: 0 0 4px 25px;
       color: var(--art-violet);
       font-family: var(--hand);
       font-size: .88rem;
       font-weight: 700;
       transform: rotate(-1deg);
+    }
+    .seller-cue::before {
+      position: absolute;
+      bottom: 7px;
+      left: 0;
+      width: 18px;
+      border-top: 2px solid currentColor;
+      content: "";
+      transform: rotate(-8deg);
+    }
+    .seller-cue::after {
+      position: absolute;
+      bottom: 3px;
+      left: 14px;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      content: "";
+      transform: rotate(45deg);
     }
     .theme-toggle {
       border: 0;
@@ -243,9 +278,16 @@
     .business-actions {
       display: flex;
       justify-content: center;
+      align-items: center;
+      gap: 14px;
       padding: 12px 18px 16px;
       border-top: 1px solid var(--art-border);
       background: var(--art-surface-soft);
+    }
+    .business-hint {
+      color: var(--art-muted);
+      font-size: .76rem;
+      font-weight: 650;
     }
     .business-continue {
       padding: 9px 15px;
@@ -444,7 +486,8 @@
     .detail-drawer.is-open { transform: translateX(0); }
     @media (min-width: 821px) {
       body.is-drawer-open .board-head,
-      body.is-drawer-open .prompt-deck {
+      body.is-drawer-open .prompt-deck,
+      body.is-drawer-open .business-actions {
         padding-right: 434px;
         transition: padding-right .28s cubic-bezier(.2,.7,.2,1);
       }
@@ -645,6 +688,8 @@
       font-weight: 700;
     }
     .svg-hand.amber-text { fill: var(--art-amber); font-size: 14px; }
+    .svg-product.amber-text,
+    .svg-small.amber-text { fill: var(--art-amber); }
     .svg-hand.sticky-text { fill: var(--art-yellow-ink); font-size: 17px; }
     .label { opacity: 0; transition: opacity .18s ease .62s; }
     .fade-in { opacity: 0; transition: opacity .34s ease .3s; }
@@ -665,6 +710,9 @@
     .reveal.is-active .fill-amber { animation: label-in .18s ease .58s both; }
     .node-hit { cursor: pointer; }
     .node-hit:hover .draw { stroke-width: 4.2; }
+    body[data-board="opportunity"] .node-hit:hover .ink,
+    body[data-board="opportunity"] .node-hit:hover .violet,
+    body[data-board="opportunity"] .node-hit:hover .amber { stroke-width: 3.8; }
 
     /* Focus mode: strongly de-emphasise everything that is not part of the answer */
     body[data-board="architecture"][data-focus] .whiteboard .reveal > * {
@@ -673,6 +721,9 @@
     }
     body[data-board="architecture"][data-focus] .whiteboard .reveal > .is-focused { opacity: 1; }
     .node-hit.is-focused .draw { stroke-width: 4.4; }
+    body[data-board="opportunity"] .node-hit.is-focused .ink,
+    body[data-board="opportunity"] .node-hit.is-focused .violet,
+    body[data-board="opportunity"] .node-hit.is-focused .amber { stroke-width: 4.4; }
     .node-hit.is-focused[data-cat="build"] .draw { stroke: var(--art-violet); }
     .node-hit.is-focused[data-cat="build"] .node-fill { fill: var(--art-violet-soft); }
     .node-hit.is-focused[data-cat="gov"] .draw { stroke: var(--art-violet); }
@@ -716,6 +767,7 @@
       .head-actions { justify-content: space-between; }
       .prompt-deck { grid-template-columns: 1fr; gap: 3px; padding: 8px 14px; }
       .board-nav { margin-left: 25px; }
+      .business-actions { flex-wrap: wrap; }
       .phase-cue { padding-inline: 14px; }
       .phase-cue::after { left: 14px; }
       .mobile-pan-note { display: block; }
@@ -753,9 +805,12 @@
         <div>
           <div class="title-row">
             <span class="marker-cap" aria-hidden="true"></span>
-            <h1 id="board-title">Enterprise agents: opportunity, value evidence, and architecture</h1>
+            <div class="title-copy">
+              <p class="whiteboard-kicker">Whiteboard walkthrough</p>
+              <h1 id="board-title">The enterprise agent story</h1>
+              <span class="title-path">opportunity <span>→</span> value evidence <span>→</span> architecture</span>
+            </div>
           </div>
-          <p class="thesis" id="board-thesis"><strong>From agent opportunity to measurable business value.</strong> Start with the work, then design only the capabilities required to scale it.</p>
           <div class="board-nav" role="tablist" aria-label="Whiteboard story boards">
             <button class="board-tab" id="board-opportunity-tab" type="button" role="tab" aria-controls="board-opportunity" aria-selected="true">1 · Opportunity + value evidence</button>
             <button class="board-tab" id="board-architecture-tab" type="button" role="tab" aria-controls="board-architecture" aria-selected="false">2 · Enterprise architecture</button>
@@ -806,7 +861,6 @@
                 <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="ink"/>
                 <text x="185" y="302" text-anchor="middle" class="svg-product">Concrete work opportunity</text>
                 <text x="185" y="328" text-anchor="middle" class="svg-small">job · friction · owner · baseline</text>
-                <text x="185" y="350" text-anchor="middle" class="svg-tiny">not a product-first pilot</text>
               </g>
               <path d="M320 314 Q346 306 372 314" class="ink" marker-end="url(#business-arrow)"/>
               <g id="pattern" class="node-hit" tabindex="0" role="button" aria-label="Details for selecting an agentic pattern">
@@ -821,7 +875,7 @@
                 <path d="M635 289 Q724 283 812 290 L809 344 Q723 350 637 343 Z" class="ink"/>
                 <text x="723" y="314" text-anchor="middle" class="svg-small">Bounded agent + workflow</text>
                 <text x="723" y="334" text-anchor="middle" class="svg-tiny">approval and deterministic steps</text>
-                <text x="613" y="374" text-anchor="middle" class="svg-hand">More autonomy only when the evidence supports it.</text>
+                <text x="613" y="374" text-anchor="middle" class="svg-hand">Start with the least autonomy that does the job.</text>
               </g>
               <path d="M846 314 Q872 306 898 314" class="ink" marker-end="url(#business-arrow)"/>
               <g id="evidence" class="node-hit" tabindex="0" role="button" aria-label="Details for value evidence">
@@ -835,24 +889,27 @@
               <g id="valueDecision" class="node-hit" tabindex="0" role="button" aria-label="Details for the value decision">
                 <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="fill-amber"/>
                 <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="amber"/>
-                <text x="1316" y="302" text-anchor="middle" class="svg-hand amber-text">Scale</text>
-                <text x="1316" y="323" text-anchor="middle" class="svg-hand amber-text">adjust / stop</text>
-                <text x="1316" y="347" text-anchor="middle" class="svg-tiny">fund the evidence</text>
+                <text x="1316" y="302" text-anchor="middle" class="svg-product amber-text">Scale</text>
+                <text x="1316" y="325" text-anchor="middle" class="svg-small amber-text">adjust / stop</text>
+                <text x="1316" y="347" text-anchor="middle" class="svg-tiny">fund what the evidence supports</text>
               </g>
+              <path d="M1316 365 Q1316 422 965 421 Q650 420 613 394" class="amber dash-ink" opacity=".7" marker-end="url(#business-amber-arrow)"/>
+              <text x="940" y="444" text-anchor="middle" class="svg-hand amber-text">adjust the work or the pattern, then re-test</text>
 
               <path d="M75 484 Q704 470 1365 486" class="amber" opacity=".5"/>
               <text x="76" y="457" class="svg-hand amber-text">From pilots to measurable returns: manage the investment, not just the model.</text>
-              <text x="78" y="518" class="svg-title">The operating loop</text>
-              <text x="78" y="542" class="svg-small">Optimize the request at runtime · improve the workflow over time · govern spend continuously</text>
+              <text x="78" y="518" class="svg-title">Running it well</text>
+              <text x="78" y="542" class="svg-small">Match the model to the task · measure quality + outcomes · improve the workflow · hold spend and guardrails</text>
               <path d="M110 594 Q327 568 536 594 Q718 621 913 594 Q1126 567 1328 594" class="amber" marker-end="url(#business-amber-arrow)"/>
-              <text x="110" y="634" class="svg-hand amber-text">right-size each request</text>
-              <text x="593" y="634" class="svg-hand amber-text">improve the agent workflow</text>
-              <text x="1095" y="634" class="svg-hand amber-text">hold guardrails and budgets</text>
-              <text x="720" y="687" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this selected opportunity real, connected, governed, and measurable?</text>
+              <text x="110" y="634" class="svg-hand amber-text">match the model to the task</text>
+              <text x="593" y="634" class="svg-hand amber-text">measure quality + improve the workflow</text>
+              <text x="1095" y="634" class="svg-hand amber-text">hold spend + guardrails</text>
+              <text x="720" y="687" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this real, connected to the systems you already run, governed, and measurable?</text>
             </svg>
           </div>
         </div>
         <div class="business-actions">
+          <span class="business-hint">Tap any box for the detail behind it.</span>
           <button class="business-continue" id="continue-to-architecture" type="button">Continue to enterprise architecture →</button>
         </div>
       </section>
@@ -1215,7 +1272,7 @@
       agent365: { title: "Microsoft Agent 365", role: "Estate-level inventory, ownership, and observe, govern, and secure capabilities across Microsoft and connected external agents.", why: "Leaders need one place to see and control the agent estate, including supported Amazon Bedrock and Google Vertex AI agents, revealed after the runtime story is understood.", caveat: "It is a scope, not a request path. External agents can synchronize to the registry and use supported SDK or OpenTelemetry integration for deeper observability, but coverage and controls depend on the supported connection—not every external platform is automatic." },
       handoff: { title: "Hand back to Board 1", role: "Connects this architecture to the measurable value loop that Board 1 owns.", why: "Architecture is only worth funding when it makes an outcome measurable.", caveat: "Board 1 owns the business opportunity and value evidence; this board stops at making that loop measurable." },
       opportunity: { title: "Concrete work opportunity", role: "A named job, friction, accountable owner, and measurable baseline.", why: "It stops the conversation from becoming an unbounded product-first pilot.", caveat: "A broad AI aspiration is not yet a testable opportunity." },
-      pattern: { title: "Choose the right agentic pattern", role: "Match the work to an assistive copilot, a bounded agent with a deterministic workflow, or more autonomous orchestration only when justified.", why: "Most customer conversations are agent-forward, but the safe and valuable amount of autonomy varies by process.", caveat: "An agent is not automatically the right tool for every step; retain approval and deterministic automation where they improve control." },
+      pattern: { title: "Choose the right agentic pattern", role: "Match the work to an assistive copilot experience or a bounded agent with a deterministic workflow, and add autonomy only when evidence justifies it.", why: "Most customer conversations are agent-forward, but the safe and valuable amount of autonomy varies by process.", caveat: "An agent is not automatically the right tool for every step; retain approval and deterministic automation where they improve control." },
       evidence: { title: "Value evidence", role: "Combines quality, adoption, cost, business-system KPIs, and owner validation.", why: "It distinguishes a promising technical pilot from a measurable business return.", caveat: "Telemetry and token counts inform the picture; neither alone proves value." },
       valueDecision: { title: "Scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
       hypothesis: { title: "Outcome hypothesis", role: "A testable claim about the work and result expected to change.", why: "It makes value falsifiable before technology work expands.", caveat: "A broad aspiration without an owner or measure is not yet a useful hypothesis." },
@@ -1341,7 +1398,6 @@
     const boardTabs = [...document.querySelectorAll(".board-tab")];
     const boardPanels = [...document.querySelectorAll(".board-panel")];
     const architectureDeck = document.getElementById("architecture-deck");
-    const boardThesis = document.getElementById("board-thesis");
     const boardCue = document.getElementById("board-cue");
     const continueToArchitecture = document.getElementById("continue-to-architecture");
     const phaseCue = document.getElementById("phase-cue");
@@ -1380,9 +1436,6 @@
       });
       boardTabs.forEach(tab => tab.setAttribute("aria-selected", String(tab.id === `board-${name}-tab`)));
       architectureDeck.hidden = !architecture;
-      boardThesis.innerHTML = architecture
-        ? "<strong>Start with the use case.</strong> Add only the capabilities needed to make it connected, governed, and measurable."
-        : "<strong>From agent opportunity to measurable business value.</strong> Start with the work, then design only the capabilities required to scale it.";
       boardCue.textContent = architecture
         ? "How the enterprise agent story fits together"
         : "Start with the work, not the stack.";
