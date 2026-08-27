@@ -2,6 +2,10 @@
 
 A dependency-free, interactive guide designed for GitHub Pages. It starts with an opportunity-and-evidence whiteboard, then progresses through the enterprise architecture required to build, connect, govern, operate, and measure the selected agent scenario.
 
+[![Open the interactive whiteboard](https://img.shields.io/badge/Open%20the%20interactive%20whiteboard-7058B6?style=for-the-badge)](https://adamhockemeyer.github.io/enterprise-agent-story/)
+
+[![Preview of the enterprise agent story whiteboard](docs/preview.png)](https://adamhockemeyer.github.io/enterprise-agent-story/)
+
 ## Run locally
 
 Open `index.html` in a modern browser. No build, package installation, or server is required.
