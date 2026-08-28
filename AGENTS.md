@@ -16,6 +16,7 @@
 - Treat Copilot Studio and Foundry as complementary paths that can be used separately or together.
 - Preserve coexistence: Microsoft Fabric/OneLake can be promoted without implying that Snowflake, Databricks, SAP, Salesforce, SQL, Excel, PTC, Siemens, or other existing systems must be replaced or migrated.
 - Keep operational access distinct from data unification: agents reach business systems of record through approved APIs, MCP servers, connectors, or workflows; OneLake can reference or mirror selected cross-estate data for Fabric workloads.
+- Keep local visual iterations uncommitted, unpushed, and unpublished until the user has reviewed and explicitly approved them.
 
 ## Visual and interaction language
 
