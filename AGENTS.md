@@ -11,7 +11,7 @@
 - Preserve the two-board sequence: Board 1 frames a concrete business opportunity and evidence; Board 2 progressively reveals the enterprise architecture.
 - Board 2 tells the story from work surfaces, to agent building, safe connection, usable capabilities, trusted data, estate governance, and finally back to measurable value.
 - Agent 365 is an estate-level inventory, ownership, governance, and observability scope. It is not a runtime request path.
-- API Center is design-time catalog/discovery, not a runtime hop.
+- API Center is the registry and discovery plane for approved APIs, MCP servers, and skills. Its MCP endpoint can serve catalog metadata to compatible clients; it does not proxy or execute the registered capability.
 - API Management / AI Gateway is optional and governs only traffic that crosses its managed boundary.
 - Treat Copilot Studio and Foundry as complementary paths that can be used separately or together.
 - Preserve coexistence: Microsoft Fabric/OneLake can be promoted without implying that Snowflake, Databricks, SAP, Salesforce, SQL, Excel, PTC, Siemens, or other existing systems must be replaced or migrated.

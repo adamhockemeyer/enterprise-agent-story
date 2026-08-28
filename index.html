@@ -1012,12 +1012,12 @@
                 <path d="M280 311 Q840 304 1400 310 L1396 398 Q840 406 282 400 Z" class="blue dash-blue fade-in"/>
                 <g class="label"><text x="298" y="328" class="svg-tiny" fill="var(--art-blue)">SHARED ENTERPRISE CONNECTION + ACCESS</text></g>
 
-                <g id="apim" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for API Management">
+                <g id="apim" class="node-hit" data-cat="access" tabindex="-1" role="button" aria-label="Details for API Management and AI Gateway">
                   <path d="M290 337 Q420 331 550 336 L547 390 Q420 396 292 392 Z" class="node-fill"/>
                   <path pathLength="1" d="M290 337 Q420 331 550 336 L547 390 Q420 396 292 392 Z" class="blue draw"/>
                   <g class="label">
-                    <text x="420" y="360" text-anchor="middle" class="svg-chip">API Management</text>
-                    <text x="420" y="380" text-anchor="middle" class="svg-tiny">optional gateway for API + MCP tools</text>
+                    <text x="420" y="360" text-anchor="middle" class="svg-chip">API Management · AI Gateway</text>
+                    <text x="420" y="380" text-anchor="middle" class="svg-tiny">optional policy boundary for models + tools</text>
                   </g>
                 </g>
 
@@ -1044,7 +1044,7 @@
                   <path pathLength="1" d="M1130 337 Q1260 331 1390 336 L1387 390 Q1260 396 1132 392 Z" class="ink draw"/>
                   <g class="label">
                     <text x="1260" y="360" text-anchor="middle" class="svg-chip">API Center</text>
-                    <text x="1260" y="380" text-anchor="middle" class="svg-tiny">design-time catalog · not runtime</text>
+                    <text x="1260" y="380" text-anchor="middle" class="svg-tiny">approved API, MCP + skill catalog</text>
                   </g>
                 </g>
               </g>
@@ -1122,7 +1122,7 @@
                 <g id="purview" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Microsoft Purview">
                   <path d="M280 555 Q840 548 1400 554 L1396 686 Q840 694 282 688 Z" class="fill-violet" opacity=".3"/>
                   <path d="M280 555 Q840 548 1400 554 L1396 686 Q840 694 282 688 Z" class="violet dash-violet fade-in"/>
-                  <g class="label"><text x="298" y="574" class="svg-tiny" fill="var(--art-violet)">Microsoft Purview · governance scope, not a request hop</text></g>
+                  <g class="label"><text x="298" y="574" class="svg-tiny" fill="var(--art-violet)">Microsoft Purview · enterprise governance scope, not a request hop</text></g>
                 </g>
 
                 <g id="snowflake" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Snowflake">
@@ -1257,15 +1257,15 @@
       foundry: { title: "Microsoft Foundry", role: "Pro-code agent platform: tools and toolboxes, API, MCP, Fabric IQ, and A2A integration, plus evaluation, deployment, and tracing.", why: "Engineering teams need control over models, tool lifecycle, evaluation, and traces.", caveat: "Use it on its own or alongside Copilot Studio; this is not a forced fork. Some capabilities are preview." },
       connectors: { title: "Built-in tools + connectors", role: "Copilot Studio connector actions and agent tools, plus Foundry-provided tools and toolboxes, give builders supported ways to take action.", why: "Start with supported capabilities before creating a custom integration.", caveat: "These are not one shared connector catalog. Each platform has its own supported tool types, connections, and authorization model." },
       logicApps: { title: "Logic Apps", role: "Deterministic workflows and connector actions offered to agents as reusable tools.", why: "Some steps should stay deterministic, retryable, and auditable.", caveat: "It is a workflow and tool provider, not a peer agent runtime." },
-      apiCenter: { title: "API Center", role: "Design-time registration, catalog, and discovery for API and MCP assets.", why: "Builders should find approved capabilities before they write integration code.", caveat: "It is design time only. It is not a runtime hop, and no API Management request flow into it is implied." },
-      apim: { title: "API Management · AI Gateway", role: "Optional managed boundary for enterprise APIs and MCP tools that can apply policy, authentication, rate and token limits, and token metrics.", why: "Where representative API or MCP traffic crosses it, central control and cost signal become possible before an agent reaches an enterprise capability.", caveat: "It is optional and applies only to traffic that crosses it. It is not a universal gateway for every agent call or a required hop for platform-provided tools." },
+      apiCenter: { title: "API Center", role: "The organization's registry and discovery plane for approved APIs, MCP servers, and skills, with access governed through Azure RBAC.", why: "Builders start from an approved inventory instead of ad-hoc endpoints: Foundry private tool catalogs can discover organization-scoped remote MCP tools, Copilot Studio can import an exported OpenAPI definition as a custom connector, and compatible MCP clients can query catalog metadata.", caveat: "It does not proxy or execute the registered API, MCP server, or skill. Each surface uses its own supported handoff and backend authorization; discovery is not automatic publication to every Copilot or custom solution. Foundry private tool catalogs are preview, and the API Center MCP endpoint requires the Standard tier." },
+      apim: { title: "API Management · AI Gateway", role: "Optional managed boundary for model and MCP tool traffic that can apply policy, authentication, rate and token limits, and emit token metrics.", why: "Where selected traffic crosses it, central control and cost signal become possible before an agent reaches a model or enterprise capability.", caveat: "It complements Foundry rather than replacing it: Foundry builds, evaluates, and operates agents, while the gateway provides a centralized runtime boundary. It governs only traffic that crosses it, not every agent call or platform-provided tool. AI Gateway tier is public preview; availability and commercial terms vary by region." },
       entApis: { title: "Enterprise APIs + MCP servers", role: "Your own systems exposed to agents as reusable, approved tools.", why: "It separates approved enterprise capability from platform-native tooling.", caveat: "Reuse depends on ownership and lifecycle; exposing an endpoint is not governance." },
       fabricIq: { title: "Fabric IQ + data agent", role: "A capability an agent can call to answer natural-language questions over business data.", why: "Most useful agent questions end in data the business already trusts.", caveat: "The agent delegates under the caller's identity and permissions. It is a capability, not a universal data gateway. Some capabilities are preview." },
       externalAgents: { title: "External agents", role: "Agents you do not host, reached through A2A collaboration or a purpose-built integration.", why: "Real estates include partner, ISV, SaaS, and third-party agents.", caveat: "External agents can be registered in Foundry for telemetry, traces, and evaluation; registration does not host, proxy, or invoke their runtime. Agent 365 can synchronize supported external platforms, including Amazon Bedrock and Google Vertex AI, into its registry; do not assume automatic coverage for every platform." },
       models: { title: "Model access + choice", role: "Choose the model and quality target that fit each task, including Microsoft, Google, AWS, and other providers through the integration pattern that fits.", why: "Cost, latency, and quality are decided here, before any gateway measures them.", caveat: "API Management AI Gateway can provide one governed endpoint for configured Foundry, AWS Bedrock, Google Vertex, OpenAI, Anthropic, or custom model backends. A cheaper model or lower token count does not by itself prove quality or return." },
       monitor: { title: "Operations telemetry", role: "Azure Monitor and Application Insights dashboards and alerts, Foundry evaluation and traces, and API Management token metrics.", why: "Operations needs actionable signals from participating runtimes and managed traffic.", caveat: "Coverage follows what is instrumented and what crosses managed boundaries. Operational telemetry is not business impact." },
-      purview: { title: "Microsoft Purview", role: "Governance scope for classification, protection, risk, and compliance across the data estate.", why: "The data band needs enterprise governance rather than per-source improvisation.", caveat: "It is a scope around this data, not a request hop. Sources retain their native controls." },
-      fabric: { title: "Microsoft Fabric + OneLake", role: "Promoted Microsoft governed data foundation for analytics and AI.", why: "It gives the enterprise a prominent Microsoft foundation while allowing coexistence.", caveat: "It does not require replacing, replicating, or universally virtualizing existing data." },
+      purview: { title: "Microsoft Purview", role: "Enterprise-wide governance, protection, risk, and compliance across the data estate, including classification, sensitivity labels, DLP, and audit.", why: "The data band needs governance across Microsoft and non-Microsoft sources rather than per-source improvisation.", caveat: "It is a scope around this data, not a request hop; sources retain their native controls. Purview also supports structured Fabric assets. Fabric's OneLake Catalog Govern experience provides Fabric-native governance insights, so the products complement each other rather than dividing by data type." },
+      fabric: { title: "Microsoft Fabric + OneLake", role: "Promoted Microsoft governed data foundation for analytics and AI.", why: "It gives the enterprise a prominent Microsoft foundation while allowing coexistence.", caveat: "Fabric's OneLake Catalog includes a Govern experience for Fabric-native governance insights. It does not require replacing, replicating, or universally virtualizing existing data." },
       snowflake: { title: "Snowflake", role: "A coexisting external data platform that may remain authoritative.", why: "The board reflects a real, heterogeneous data estate.", caveat: "Interoperation is estate-specific and preserves source-native controls." },
       databricks: { title: "Databricks", role: "A coexisting external data and AI platform.", why: "A Microsoft foundation should not erase existing customer investments.", caveat: "The connection pattern is customer-specific; replacement or mandatory replication is not implied." },
       businessSystems: { title: "Business systems of record", role: "Operational systems that hold the business context an agent needs, such as SAP, Salesforce, SQL, Excel, PTC, and Siemens.", why: "Useful agents need the right context from the systems the business already relies on, not a forced data-migration project.", caveat: "These sources remain authoritative. Reach them through the appropriate approved connector, API, MCP server, or data pattern, with the source system's identity and permissions preserved." },
@@ -1289,8 +1289,8 @@
         focus: ["agent365", "apiCenter", "apim", "purview"],
         route: [
           { node: "agent365", cat: "gov", anchor: "downLeft", layer: "Estate governance", chip: "Microsoft Agent 365", text: "See every agent, who owns it, and apply estate-level observe, govern, and secure controls." },
-          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "Register and catalog the APIs and MCP servers builders are allowed to reuse." },
-          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Policy, authentication, and limits on the traffic that actually crosses it." },
+          { node: "apiCenter", cat: "access", layer: "Catalog + discovery", chip: "API Center", text: "Register and discover the approved APIs, MCP servers, and skills builders are allowed to reuse." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management · AI Gateway", text: "Policy, authentication, and limits on selected model and tool traffic that crosses it." },
           { node: "purview", cat: "data", anchor: "left", layer: "Data governance", chip: "Microsoft Purview", text: "Classification, protection, and compliance scope around the data estate." }
         ],
         caveat: "Governance is layered rather than one product. Agent 365 is a scope, not a request path; sources keep their native controls; and each layer can be adopted on its own."
@@ -1302,7 +1302,7 @@
         route: [
           { node: "models", cat: "build", layer: "Build", chip: "Model access + choice", text: "Match model, quality target, and task before optimizing anything else." },
           { node: "foundry", cat: "build", layer: "Build", chip: "Microsoft Foundry", text: "Evaluate quality against cost and trace what each agent run actually does." },
-          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Rate and token limits plus token metrics for the traffic that crosses it." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management · AI Gateway", text: "Rate and token limits plus token metrics for selected model and tool traffic that crosses it." },
           { node: "monitor", cat: "ops", anchor: "left", layer: "Operations", chip: "Monitor + App Insights", text: "Dashboards and alerts over the telemetry participating runtimes emit." },
           { node: "handoff", cat: "value", anchor: "left", layer: "Value", chip: "Board 1 value loop", text: "Judge cost per successful outcome, then scale, adjust, or stop." }
         ],
@@ -1313,13 +1313,13 @@
         min: 3,
         focus: ["apiCenter", "connectors", "logicApps", "apim", "entApis", "flow-2a", "flow-2b", "flow-3a", "flow-3opt"],
         route: [
-          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "Builders start from an approved catalog instead of ad-hoc endpoints." },
-          { node: "connectors", cat: "access", layer: "Connection", chip: "Approved connectors", text: "Governed, identity-aware connections to the systems you already run." },
+          { node: "apiCenter", cat: "access", layer: "Catalog + discovery", chip: "API Center", text: "Builders start from an approved catalog instead of ad-hoc endpoints." },
+          { node: "connectors", cat: "access", layer: "Connection", chip: "Built-in tools + connectors", text: "Supported, identity-aware connections to the systems you already run." },
           { node: "logicApps", cat: "access", layer: "Workflow", chip: "Logic Apps", text: "Deterministic workflows and connector actions offered to agents as tools." },
-          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management", text: "Optional policy, authentication, and limits on the path toward capabilities." },
+          { node: "apim", cat: "access", layer: "Managed traffic", chip: "API Management · AI Gateway", text: "Optional policy, authentication, and limits on selected model and tool traffic." },
           { node: "entApis", cat: "access", layer: "Capabilities", chip: "Enterprise APIs + MCP", text: "The agent only reaches what this shared layer has approved." }
         ],
-        caveat: "There is no universal gateway. Not every call crosses API Management, and Logic Apps is a workflow and tool provider rather than a peer agent runtime."
+        caveat: "There is no universal gateway. API Center is the registry and discovery plane, not the tool-execution path; not every call crosses API Management; and Logic Apps is a workflow and tool provider rather than a peer agent runtime."
       },
       data: {
         label: "How do we use trusted data?",
@@ -1365,11 +1365,11 @@
         min: 3,
         focus: ["apiCenter", "connectors", "entApis", "studio", "foundry", "flow-2a", "flow-2b"],
         route: [
-          { node: "apiCenter", cat: "access", layer: "Design time", chip: "API Center", text: "The catalog where approved APIs and MCP servers are registered and discovered." },
+          { node: "apiCenter", cat: "access", layer: "Catalog + discovery", chip: "API Center", text: "The registry where approved APIs, MCP servers, and skills are registered and discovered." },
           { node: "connectors", cat: "access", layer: "Platform tools", chip: "Built-in tools + connectors", text: "Start with supported connector actions, agent tools, and toolboxes before creating a custom integration." },
           { node: "entApis", cat: "access", layer: "Capabilities", chip: "Enterprise APIs + MCP", text: "The reusable capability set an agent is actually allowed to call." }
         ],
-        caveat: "API Center is design time only. It is not a runtime hop, and no request flows from API Management into it."
+        caveat: "API Center can serve catalog metadata to compatible MCP clients, but it does not proxy or execute tools. No request flows from API Management into it, and each consuming surface uses a specific supported handoff rather than automatic publication."
       }
     };
 
@@ -1386,7 +1386,7 @@
     const phaseCopy = [
       "Start where the work already happens.",
       "Build with low-code, pro-code, or both.",
-      "Connect it to the business through one approved layer.",
+      "Connect through approved capabilities and managed boundaries.",
       "Give it only the capabilities it is allowed to use.",
       "Point it at business data people already trust.",
       "See and govern every agent across the estate.",
