@@ -840,21 +840,28 @@
           <div class="canvas-wrap">
             <svg class="business-board" viewBox="0 0 1440 720" role="img" aria-labelledby="business-title business-desc">
               <title id="business-title">Agent opportunity and value evidence whiteboard</title>
-              <desc id="business-desc">A business-first whiteboard that connects a concrete work opportunity to an appropriate agentic pattern, evidence, and a scale, adjust, or stop decision.</desc>
+              <desc id="business-desc">A business-first whiteboard that connects a concrete work opportunity to an appropriate level of investment, evidence, and a scale, adjust, or stop decision.</desc>
               <defs>
                 <marker id="business-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="ink"/></marker>
                 <marker id="business-amber-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="amber"/></marker>
               </defs>
-              <g transform="translate(38 34) rotate(-1)">
+              <g transform="translate(38 20) rotate(-1)">
                 <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="fill-yellow"/>
                 <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="ink"/>
-                <text x="22" y="40" class="svg-hand sticky-text">Start with the work:</text>
-                <text x="22" y="68" class="svg-hand sticky-text">Where is the friction?</text>
-                <text x="22" y="96" class="svg-hand sticky-text">Who owns the outcome?</text>
-                <text x="22" y="124" class="svg-hand sticky-text">What is the baseline?</text>
+                <path d="M255 3 L296 4 L292 43 Z" fill="var(--art-board)" opacity=".85"/>
+                <path d="M255 3 L292 43 L296 4" class="ink" opacity=".45"/>
+                <text x="22" y="40" class="svg-hand sticky-text">Where is the friction?</text>
+                <text x="22" y="68" class="svg-hand sticky-text">Who owns the outcome?</text>
+                <text x="22" y="96" class="svg-hand sticky-text">What does today look like?</text>
+                <text x="22" y="124" class="svg-hand sticky-text">What is it costing now?</text>
               </g>
               <text x="370" y="62" class="svg-hand">Board 1 · find the opportunity worth scaling</text>
               <path d="M370 70 Q766 76 1162 68" class="ink" opacity=".35"/>
+              <g aria-hidden="true" transform="rotate(-1 195 202)">
+                <text x="54" y="192" class="svg-hand">“It would be great if an agent could …”</text>
+                <text x="120" y="218" class="svg-tiny">make it testable — measure today first</text>
+                <path d="M181 226 Q177 238 182 254" class="ink" opacity=".6" marker-end="url(#business-arrow)"/>
+              </g>
 
               <g id="opportunity" class="node-hit" tabindex="0" role="button" aria-label="Details for the business opportunity">
                 <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="node-fill"/>
@@ -863,28 +870,42 @@
                 <text x="185" y="328" text-anchor="middle" class="svg-small">job · friction · owner · baseline</text>
               </g>
               <path d="M320 314 Q346 306 372 314" class="ink" marker-end="url(#business-arrow)"/>
-              <g id="pattern" class="node-hit" tabindex="0" role="button" aria-label="Details for selecting an agentic pattern">
+              <g id="pattern" class="node-hit" tabindex="0" role="button" aria-label="Details for matching the investment to the work">
                 <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="fill-violet"/>
                 <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="violet"/>
-                <text x="613" y="267" text-anchor="middle" class="svg-product">Choose the right agentic pattern</text>
-                <path d="M410 289 Q500 283 587 290 L584 344 Q498 350 412 343 Z" class="node-fill"/>
-                <path d="M410 289 Q500 283 587 290 L584 344 Q498 350 412 343 Z" class="ink"/>
-                <text x="498" y="314" text-anchor="middle" class="svg-small">Copilot experience</text>
-                <text x="498" y="334" text-anchor="middle" class="svg-tiny">assist people in the flow of work</text>
-                <path d="M635 289 Q724 283 812 290 L809 344 Q723 350 637 343 Z" class="node-fill"/>
-                <path d="M635 289 Q724 283 812 290 L809 344 Q723 350 637 343 Z" class="ink"/>
-                <text x="723" y="314" text-anchor="middle" class="svg-small">Bounded agent + workflow</text>
-                <text x="723" y="334" text-anchor="middle" class="svg-tiny">approval and deterministic steps</text>
-                <text x="613" y="374" text-anchor="middle" class="svg-hand">Start with the least autonomy that does the job.</text>
+                <text x="613" y="267" text-anchor="middle" class="svg-product">Match the investment to the work</text>
+                <path d="M404 289 Q468 283 530 290 L528 344 Q467 350 406 343 Z" class="node-fill"/>
+                <path d="M404 289 Q468 283 530 290 L528 344 Q467 350 406 343 Z" class="ink"/>
+                <text x="467" y="314" text-anchor="middle" class="svg-small">Improve the process</text>
+                <text x="467" y="334" text-anchor="middle" class="svg-tiny">reduce friction</text>
+                <path d="M548 289 Q613 283 677 290 L675 344 Q613 350 550 343 Z" class="node-fill"/>
+                <path d="M548 289 Q613 283 677 290 L675 344 Q613 350 550 343 Z" class="ink"/>
+                <text x="613" y="314" text-anchor="middle" class="svg-small">Adopt a capability</text>
+                <text x="613" y="334" text-anchor="middle" class="svg-tiny">known path</text>
+                <path d="M695 289 Q759 283 822 290 L819 344 Q758 350 697 343 Z" class="node-fill"/>
+                <path d="M695 289 Q759 283 822 290 L819 344 Q758 350 697 343 Z" class="ink"/>
+                <text x="759" y="314" text-anchor="middle" class="svg-small">Build for this work</text>
+                <text x="759" y="334" text-anchor="middle" class="svg-tiny">new build + owner</text>
+                <text x="613" y="361" text-anchor="middle" class="svg-hand">What is the least change and ongoing responsibility</text>
+                <text x="613" y="380" text-anchor="middle" class="svg-hand">needed to meet the outcome?</text>
               </g>
               <path d="M846 314 Q872 306 898 314" class="ink" marker-end="url(#business-arrow)"/>
+              <g aria-hidden="true" transform="rotate(-1 1040 205)">
+                <text x="1040" y="144" text-anchor="middle" class="svg-hand amber-text">cost per accepted outcome</text>
+                <text x="1040" y="166" text-anchor="middle" class="svg-tiny">build + change + run + review + rework</text>
+                <path d="M912 174 Q1040 177 1168 174" class="amber" opacity=".75"/>
+                <text x="1040" y="192" text-anchor="middle" class="svg-tiny">accepted outcomes</text>
+                <text x="1040" y="207" text-anchor="middle" class="svg-tiny">against the rubric</text>
+                <text x="1040" y="229" text-anchor="middle" class="svg-hand amber-text">today ↔ pilot</text>
+              </g>
               <g id="evidence" class="node-hit" tabindex="0" role="button" aria-label="Details for value evidence">
                 <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="fill-amber"/>
                 <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="amber"/>
                 <text x="1040" y="302" text-anchor="middle" class="svg-product">Value evidence</text>
                 <text x="1040" y="327" text-anchor="middle" class="svg-small">quality · adoption · cost · outcome</text>
-                <text x="1040" y="349" text-anchor="middle" class="svg-tiny">technical telemetry is one input</text>
+                <text x="1040" y="349" text-anchor="middle" class="svg-tiny">against the agreed rubric</text>
               </g>
+              <path d="M1140 264 Q1200 240 1168 174" class="amber dash-ink" opacity=".7" marker-end="url(#business-amber-arrow)"/>
               <path d="M1175 314 Q1200 306 1224 314" class="amber" marker-end="url(#business-amber-arrow)"/>
               <g id="valueDecision" class="node-hit" tabindex="0" role="button" aria-label="Details for the value decision">
                 <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="fill-amber"/>
@@ -894,17 +915,19 @@
                 <text x="1316" y="347" text-anchor="middle" class="svg-tiny">fund what the evidence supports</text>
               </g>
               <path d="M1316 365 Q1316 422 965 421 Q650 420 613 394" class="amber dash-ink" opacity=".7" marker-end="url(#business-amber-arrow)"/>
-              <text x="940" y="444" text-anchor="middle" class="svg-hand amber-text">adjust the work or the pattern, then re-test</text>
+              <text x="940" y="444" text-anchor="middle" class="svg-hand amber-text">adjust the approach, then re-test</text>
 
-              <path d="M75 484 Q704 470 1365 486" class="amber" opacity=".5"/>
-              <text x="76" y="457" class="svg-hand amber-text">From pilots to measurable returns: manage the investment, not just the model.</text>
-              <text x="78" y="518" class="svg-title">Running it well</text>
-              <text x="78" y="542" class="svg-small">Match the model to the task · measure quality + outcomes · improve the workflow · hold spend and guardrails</text>
-              <path d="M110 594 Q327 568 536 594 Q718 621 913 594 Q1126 567 1328 594" class="amber" marker-end="url(#business-amber-arrow)"/>
-              <text x="110" y="634" class="svg-hand amber-text">match the model to the task</text>
-              <text x="593" y="634" class="svg-hand amber-text">measure quality + improve the workflow</text>
-              <text x="1095" y="634" class="svg-hand amber-text">hold spend + guardrails</text>
-              <text x="720" y="687" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this real, connected to the systems you already run, governed, and measurable?</text>
+              <g id="learningLoop" class="node-hit" tabindex="0" role="button" aria-label="Details for the learning loop you own">
+                <path d="M75 512 Q704 498 1365 514" class="amber" opacity=".5"/>
+                <text x="78" y="546" class="svg-title">The learning loop you own</text>
+                <text x="720" y="570" text-anchor="middle" class="svg-hand amber-text">“A firm in the AI era is a learning system.” — Satya Nadella</text>
+                <text x="110" y="590" class="svg-hand amber-text">hill climb →</text>
+                <path d="M110 624 Q240 610 380 615 Q500 600 620 605 Q740 592 865 596 Q990 584 1100 590 Q1210 565 1328 555" class="amber" marker-end="url(#business-amber-arrow)"/>
+                <text x="110" y="650" class="svg-hand amber-text">define “good” — your outcome rubric</text>
+                <text x="593" y="650" class="svg-hand amber-text">evaluate real work + feedback</text>
+                <text x="1095" y="650" class="svg-hand amber-text">improve → prompts · skills · tools · workflow</text>
+              </g>
+              <text x="720" y="705" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this real, connected to the systems you already run, governed, and measurable?</text>
             </svg>
           </div>
         </div>
@@ -1274,10 +1297,11 @@
       businessSystems: { title: "Business systems of record", role: "Operational systems that hold the business context an agent needs, such as SAP, Salesforce, SQL, Excel, PTC, and Siemens.", why: "Useful agents need the right context from the systems the business already relies on, not a forced data-migration project.", caveat: "These sources remain authoritative. Reach them through the appropriate approved connector, API, MCP server, or data pattern, with the source system's identity and permissions preserved." },
       agent365: { title: "Microsoft Agent 365", role: "Estate-level inventory, ownership, and observe, govern, and secure capabilities across Microsoft and connected external agents.", why: "Leaders need one place to see and control the agent estate, including supported Amazon Bedrock and Google Vertex AI agents, revealed after the runtime story is understood.", caveat: "It is a scope, not a request path. External agents can synchronize to the registry and use supported SDK or OpenTelemetry integration for deeper observability, but coverage and controls depend on the supported connection—not every external platform is automatic." },
       handoff: { title: "Hand back to Board 1", role: "Connects this architecture to the measurable value loop that Board 1 owns.", why: "Architecture is only worth funding when it makes an outcome measurable.", caveat: "Board 1 owns the business opportunity and value evidence; this board stops at making that loop measurable." },
-      opportunity: { title: "Concrete work opportunity", role: "A named job, friction, accountable owner, and measurable baseline.", why: "It stops the conversation from becoming an unbounded product-first pilot.", caveat: "A broad AI aspiration is not yet a testable opportunity." },
-      pattern: { title: "Choose the right agentic pattern", role: "Match the work to an assistive copilot experience or a bounded agent with a deterministic workflow, and add autonomy only when evidence justifies it.", why: "Most customer conversations are agent-forward, but the safe and valuable amount of autonomy varies by process.", caveat: "An agent is not automatically the right tool for every step; retain approval and deterministic automation where they improve control." },
-      evidence: { title: "Value evidence", role: "Combines quality, adoption, cost, business-system KPIs, and owner validation.", why: "It distinguishes a promising technical pilot from a measurable business return.", caveat: "Telemetry and token counts inform the picture; neither alone proves value." },
-      valueDecision: { title: "Scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
+      opportunity: { title: "Concrete work opportunity", role: "A named job, friction, accountable owner, and measurable baseline for today's process.", why: "It stops the conversation from becoming an unbounded product-first pilot.", caveat: "A broad AI aspiration is not yet a testable opportunity. Agree how today's quality, cycle time, and all-in cost will be measured before the pilot starts." },
+      pattern: { title: "Match the investment to the work", role: "Decide whether to improve the process, adopt a proven capability, or build a purpose-designed capability with a named operating owner.", why: "It makes the investment and ongoing responsibility proportionate to the business work, rather than assuming every AI request needs a new build.", caveat: "Start with the least autonomy and smallest investment that can safely achieve the outcome. High volume alone is not enough; proprietary workflow, cross-system action, business consequence, and reuse can justify a purpose-built, governed solution." },
+      evidence: { title: "Value evidence", role: "Combines quality, adoption, cost, business-system KPIs, and owner validation. Compare the same job before and after the pilot, including the fully loaded cost per accepted outcome.", why: "It distinguishes a promising technical pilot from a measurable business return.", caveat: "Include build, change, run, review, and rework costs for the work being compared. Run costs include model, tool, data, runtime, and operational costs. Telemetry and token counts inform the picture; neither alone proves value." },
+      valueDecision: { title: "Scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Set a bounded test and agreed decision date before starting. Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
+      learningLoop: { title: "The learning loop you own", role: "Define the business outcome and its evaluation rubric, evaluate real work and feedback, then improve the next version of the system.", why: "The durable asset is not a rented model by itself. It is the organization’s workflow knowledge, outcome criteria, evidence, and controlled ability to improve.", caveat: "This is not autonomous production self-modification. Evaluate and version changes deliberately before promoting them. Improvements can include prompts, skills, tools, workflow, retrieved context, guardrails, and model choice; model training is a later, separate choice when justified." },
       hypothesis: { title: "Outcome hypothesis", role: "A testable claim about the work and result expected to change.", why: "It makes value falsifiable before technology work expands.", caveat: "A broad aspiration without an owner or measure is not yet a useful hypothesis." },
       baseline: { title: "Baseline", role: "The agreed current-state measure before intervention.", why: "It creates a comparison point for later validation.", caveat: "Instrumenting the solution after launch cannot reliably recreate every baseline." },
       adoption: { title: "Adoption + process change", role: "Behavior, workflow, and accountability changes required to realize value.", why: "Deployment alone rarely changes business performance.", caveat: "Usage volume is not sufficient evidence that the process improved." },
