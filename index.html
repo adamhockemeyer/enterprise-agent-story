@@ -828,7 +828,7 @@
           <button class="prompt" type="button" data-question="govern" aria-pressed="false">How do we govern this?</button>
           <button class="prompt" type="button" data-question="cost" aria-pressed="false">How do we manage cost and tokens?</button>
           <button class="prompt" type="button" data-question="connect" aria-pressed="false">How do we connect safely?</button>
-          <button class="prompt" type="button" data-question="data" aria-pressed="false">How do we use trusted data?</button>
+          <button class="prompt" type="button" data-question="data" aria-pressed="false">How do we unify data without a rip-and-replace?</button>
           <button class="prompt" type="button" data-question="platforms" aria-pressed="false">Can we use our existing platforms?</button>
           <button class="prompt" type="button" data-question="existingAgents" aria-pressed="false">How do we use the agents we already have?</button>
           <button class="prompt" type="button" data-question="discover" aria-pressed="false">How do builders find approved tools?</button>
@@ -1116,8 +1116,10 @@
                   <text x="30" y="628" class="svg-band">BUSINESS DATA</text>
                   <text x="30" y="644" class="svg-band">LIVES</text>
                 </g>
-                <path id="flow-4" pathLength="1" d="M700 498 Q698 540 700 583" class="ink draw" marker-end="url(#arrow-ink)"/>
-                <g class="label"><text x="716" y="528" class="svg-tiny">under the caller's permissions</text></g>
+                <path id="flow-4" pathLength="1" d="M700 498 Q708 540 725 583" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <g class="label"><text x="741" y="528" class="svg-tiny">under the caller's permissions</text></g>
+                <path id="flow-business-systems" pathLength="1" d="M420 498 Q418 540 425 583" class="ink draw" marker-end="url(#arrow-ink)"/>
+                <g class="label"><text x="432" y="528" class="svg-tiny">governed context + actions</text></g>
 
                 <g id="purview" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Microsoft Purview">
                   <path d="M280 555 Q840 548 1400 554 L1396 686 Q840 694 282 688 Z" class="fill-violet" opacity=".3"/>
@@ -1125,45 +1127,45 @@
                   <g class="label"><text x="298" y="574" class="svg-tiny" fill="var(--art-violet)">Microsoft Purview · enterprise governance scope, not a request hop</text></g>
                 </g>
 
-                <g id="snowflake" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Snowflake">
-                  <path d="M300 593 Q385 587 470 592 L467 662 Q385 668 302 664 Z" class="node-fill"/>
-                  <path pathLength="1" d="M300 593 Q385 587 470 592 L467 662 Q385 668 302 664 Z" class="green draw"/>
+                <g id="businessSystems" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for business systems of record">
+                  <path d="M290 593 Q420 587 550 592 L547 662 Q420 668 292 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M290 593 Q420 587 550 592 L547 662 Q420 668 292 664 Z" class="green draw"/>
                   <g class="label">
-                    <text x="385" y="624" text-anchor="middle" class="svg-chip">Snowflake</text>
-                    <text x="385" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
+                    <text x="420" y="616" text-anchor="middle" class="svg-chip">Business systems of record</text>
+                    <text x="420" y="638" text-anchor="middle" class="svg-tiny">SAP · Salesforce · SQL · Excel</text>
+                    <text x="420" y="655" text-anchor="middle" class="svg-tiny">PTC · Siemens · and more</text>
                   </g>
                 </g>
-
-                <path pathLength="1" d="M474 628 Q497 622 516 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
 
                 <g id="fabric" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Microsoft Fabric and OneLake">
-                  <path d="M520 593 Q700 587 880 592 L877 662 Q700 668 522 664 Z" class="fill-green"/>
-                  <path pathLength="1" d="M520 593 Q700 587 880 592 L877 662 Q700 668 522 664 Z" class="green draw"/>
+                  <path d="M570 593 Q725 587 880 592 L877 662 Q725 668 572 664 Z" class="fill-green"/>
+                  <path pathLength="1" d="M570 593 Q725 587 880 592 L877 662 Q725 668 572 664 Z" class="green draw"/>
                   <g class="label">
-                    <text x="700" y="618" text-anchor="middle" class="svg-product">Microsoft Fabric · OneLake</text>
-                    <text x="700" y="640" text-anchor="middle" class="svg-small">promoted governed data foundation</text>
-                    <text x="700" y="657" text-anchor="middle" class="svg-tiny">unify and activate where it helps</text>
+                    <text x="725" y="618" text-anchor="middle" class="svg-product">Microsoft Fabric · OneLake</text>
+                    <text x="725" y="640" text-anchor="middle" class="svg-small">unify data across the enterprise</text>
+                    <text x="725" y="657" text-anchor="middle" class="svg-tiny">reference, mirror + activate where it helps</text>
                   </g>
                 </g>
 
-                <path pathLength="1" d="M884 628 Q907 622 926 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
+                <path pathLength="1" d="M884 628 Q892 622 896 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
+
+                <g id="snowflake" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Snowflake">
+                  <path d="M900 593 Q975 587 1050 592 L1047 662 Q975 668 902 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M900 593 Q975 587 1050 592 L1047 662 Q975 668 902 664 Z" class="green draw"/>
+                  <g class="label">
+                    <text x="975" y="624" text-anchor="middle" class="svg-chip">Snowflake</text>
+                    <text x="975" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
+                  </g>
+                </g>
+
+                <path pathLength="1" d="M1054 628 Q1062 622 1066 628" class="green draw" marker-start="url(#arrow-green)" marker-end="url(#arrow-green)"/>
 
                 <g id="databricks" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for Databricks">
-                  <path d="M930 593 Q1015 587 1100 592 L1097 662 Q1015 668 932 664 Z" class="node-fill"/>
-                  <path pathLength="1" d="M930 593 Q1015 587 1100 592 L1097 662 Q1015 668 932 664 Z" class="green draw"/>
+                  <path d="M1070 593 Q1145 587 1220 592 L1217 662 Q1145 668 1072 664 Z" class="node-fill"/>
+                  <path pathLength="1" d="M1070 593 Q1145 587 1220 592 L1217 662 Q1145 668 1072 664 Z" class="green draw"/>
                   <g class="label">
-                    <text x="1015" y="624" text-anchor="middle" class="svg-chip">Databricks</text>
-                    <text x="1015" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
-                  </g>
-                </g>
-
-                <g id="businessSystems" class="node-hit" data-cat="data" tabindex="-1" role="button" aria-label="Details for business systems of record">
-                  <path d="M1120 593 Q1260 587 1400 592 L1397 662 Q1260 668 1122 664 Z" class="node-fill"/>
-                  <path pathLength="1" d="M1120 593 Q1260 587 1400 592 L1397 662 Q1260 668 1122 664 Z" class="green draw"/>
-                  <g class="label">
-                    <text x="1260" y="616" text-anchor="middle" class="svg-chip">Business systems of record</text>
-                    <text x="1260" y="638" text-anchor="middle" class="svg-tiny">SAP · Salesforce · SQL · Excel</text>
-                    <text x="1260" y="655" text-anchor="middle" class="svg-tiny">PTC · Siemens · and more</text>
+                    <text x="1145" y="624" text-anchor="middle" class="svg-chip">Databricks</text>
+                    <text x="1145" y="646" text-anchor="middle" class="svg-tiny">coexisting platform</text>
                   </g>
                 </g>
               </g>
@@ -1265,9 +1267,9 @@
       models: { title: "Model access + choice", role: "Choose the model and quality target that fit each task, including Microsoft, Google, AWS, and other providers through the integration pattern that fits.", why: "Cost, latency, and quality are decided here, before any gateway measures them.", caveat: "API Management AI Gateway can provide one governed endpoint for configured Foundry, AWS Bedrock, Google Vertex, OpenAI, Anthropic, or custom model backends. A cheaper model or lower token count does not by itself prove quality or return." },
       monitor: { title: "Operations telemetry", role: "Azure Monitor and Application Insights dashboards and alerts, Foundry evaluation and traces, and API Management token metrics.", why: "Operations needs actionable signals from participating runtimes and managed traffic.", caveat: "Coverage follows what is instrumented and what crosses managed boundaries. Operational telemetry is not business impact." },
       purview: { title: "Microsoft Purview", role: "Enterprise-wide governance, protection, risk, and compliance across the data estate, including classification, sensitivity labels, DLP, and audit.", why: "The data band needs governance across Microsoft and non-Microsoft sources rather than per-source improvisation.", caveat: "It is a scope around this data, not a request hop; sources retain their native controls. Purview also supports structured Fabric assets. Fabric's OneLake Catalog Govern experience provides Fabric-native governance insights, so the products complement each other rather than dividing by data type." },
-      fabric: { title: "Microsoft Fabric + OneLake", role: "Promoted Microsoft governed data foundation for analytics and AI.", why: "It gives the enterprise a prominent Microsoft foundation while allowing coexistence.", caveat: "Fabric's OneLake Catalog includes a Govern experience for Fabric-native governance insights. It does not require replacing, replicating, or universally virtualizing existing data." },
-      snowflake: { title: "Snowflake", role: "A coexisting external data platform that may remain authoritative.", why: "The board reflects a real, heterogeneous data estate.", caveat: "Interoperation is estate-specific and preserves source-native controls." },
-      databricks: { title: "Databricks", role: "A coexisting external data and AI platform.", why: "A Microsoft foundation should not erase existing customer investments.", caveat: "The connection pattern is customer-specific; replacement or mandatory replication is not implied." },
+      fabric: { title: "Microsoft Fabric + OneLake", role: "A Microsoft governed data foundation that gives Fabric workloads one shared view across clouds, domains, and accounts.", why: "OneLake can unify selected data for semantic models, Fabric IQ, analytics, AI, and real-time experiences without prescribing a data-platform replacement.", caveat: "Use shortcuts to reference selected open-format data without copying it. Use mirroring to bring external catalogs into Fabric; depending on the source and format, Fabric accesses data in place or replicates it into OneLake. Fabric's OneLake Catalog includes a Govern experience for Fabric-native governance insights." },
+      snowflake: { title: "Snowflake", role: "A coexisting external data platform that may remain authoritative.", why: "Fabric Mirroring can make an existing Snowflake catalog available through OneLake for Fabric analytics, AI, data engineering, and sharing scenarios.", caveat: "Choose the integration pattern per workload. Mirroring adds catalog metadata and can access compatible data in place or replicate selected assets depending on the Snowflake asset and storage format; security, freshness, lineage, and cost remain design decisions." },
+      databricks: { title: "Databricks", role: "A coexisting external data and AI platform.", why: "OneLake can unify Databricks data with other selected estate data when Fabric experiences add value.", caveat: "The connection pattern is customer-specific; replacement or mandatory replication is not implied. Preserve source-native controls and choose reference or mirroring patterns according to the supported source format." },
       businessSystems: { title: "Business systems of record", role: "Operational systems that hold the business context an agent needs, such as SAP, Salesforce, SQL, Excel, PTC, and Siemens.", why: "Useful agents need the right context from the systems the business already relies on, not a forced data-migration project.", caveat: "These sources remain authoritative. Reach them through the appropriate approved connector, API, MCP server, or data pattern, with the source system's identity and permissions preserved." },
       agent365: { title: "Microsoft Agent 365", role: "Estate-level inventory, ownership, and observe, govern, and secure capabilities across Microsoft and connected external agents.", why: "Leaders need one place to see and control the agent estate, including supported Amazon Bedrock and Google Vertex AI agents, revealed after the runtime story is understood.", caveat: "It is a scope, not a request path. External agents can synchronize to the registry and use supported SDK or OpenTelemetry integration for deeper observability, but coverage and controls depend on the supported connection—not every external platform is automatic." },
       handoff: { title: "Hand back to Board 1", role: "Connects this architecture to the measurable value loop that Board 1 owns.", why: "Architecture is only worth funding when it makes an outcome measurable.", caveat: "Board 1 owns the business opportunity and value evidence; this board stops at making that loop measurable." },
@@ -1322,16 +1324,18 @@
         caveat: "There is no universal gateway. API Center is the registry and discovery plane, not the tool-execution path; not every call crosses API Management; and Logic Apps is a workflow and tool provider rather than a peer agent runtime."
       },
       data: {
-        label: "How do we use trusted data?",
+        label: "How do we unify data without a rip-and-replace?",
         min: 4,
-        focus: ["fabricIq", "fabric", "purview", "businessSystems", "flow-4"],
+        focus: ["fabricIq", "fabric", "purview", "businessSystems", "snowflake", "databricks", "flow-4", "flow-business-systems"],
         route: [
-          { node: "fabricIq", cat: "data", layer: "Capability", chip: "Fabric IQ + data agent", text: "An agent can delegate natural-language data questions under the caller's identity and permissions." },
-          { node: "businessSystems", cat: "data", layer: "Business context", chip: "Business systems of record", text: "Bring in the relevant context from systems such as SAP, Salesforce, SQL, Excel, PTC, and Siemens without requiring a wholesale move first." },
-          { node: "fabric", cat: "data", layer: "Foundation", chip: "Microsoft Fabric · OneLake", text: "The promoted governed foundation for analytics and AI data." },
-          { node: "purview", cat: "data", anchor: "left", layer: "Governance", chip: "Microsoft Purview", text: "Classification, protection, and compliance scope around that data." }
+          { node: "businessSystems", cat: "data", layer: "Operational access", chip: "Business systems of record", text: "Keep SAP, Salesforce, SQL, Excel, PTC, Siemens, and similar systems authoritative; reach them through approved APIs, MCP servers, connectors, or workflows." },
+          { node: "fabric", cat: "data", layer: "Unification", chip: "Microsoft Fabric · OneLake", text: "Create a shared view across selected clouds, domains, and accounts through shortcuts or mirroring, without requiring every source to move." },
+          { node: "snowflake", cat: "data", layer: "Coexistence", chip: "Snowflake", text: "Keep the platform and data that already work; make selected catalog assets available to Fabric where it adds value." },
+          { node: "databricks", cat: "data", layer: "Coexistence", chip: "Databricks", text: "Bring selected governed data into the shared view when Fabric experiences add value, without a forced replacement." },
+          { node: "fabricIq", cat: "data", layer: "Capability", chip: "Fabric IQ + data agent", text: "Use the unified data through business meaning, natural-language data questions, analytics, AI, or real-time experiences under the caller's identity and permissions." },
+          { node: "purview", cat: "data", anchor: "left", layer: "Governance", chip: "Microsoft Purview", text: "Apply classification, protection, and compliance scope across the estate." }
         ],
-        caveat: "Fabric IQ is a capability an agent can use, not a universal data gateway. Permissions still come from the data platform, and Purview is a scope rather than a request hop."
+        caveat: "Operational access and data unification are different paths. OneLake does not require every source to move or copy; the supported shortcut or mirroring mechanism depends on the source and data format. Permissions still come from the data platform, and Purview is a scope rather than a request hop."
       },
       platforms: {
         label: "Can we use our existing platforms?",
