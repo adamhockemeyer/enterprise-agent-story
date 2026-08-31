@@ -4,7 +4,7 @@ A dependency-free, interactive guide designed for GitHub Pages. It starts with a
 
 [![Open the interactive whiteboard](https://img.shields.io/badge/Open%20the%20interactive%20whiteboard-7058B6?style=for-the-badge)](https://adamhockemeyer.github.io/enterprise-agent-story/)
 
-[![Preview of the enterprise agent story whiteboard](docs/preview.png)](https://adamhockemeyer.github.io/enterprise-agent-story/)
+https://github.com/user-attachments/assets/8f4bb1e3-a562-41b0-9589-2b6843dd09d5
 
 ## Run locally
 
