@@ -28,6 +28,7 @@
       --art-green: #34835b;
       --art-green-soft: #e8f4ed;
       --art-amber: #b97819;
+      --art-amber-text: #8a5200;
       --art-amber-soft: #fff2d8;
       --art-yellow: #ffe66b;
       --art-yellow-ink: #3c3515;
@@ -57,6 +58,7 @@
       --art-green: #7ac59a;
       --art-green-soft: #1d4331;
       --art-amber: #edb958;
+      --art-amber-text: #edb958;
       --art-amber-soft: #49391f;
       --art-yellow: #d7bc42;
       --art-yellow-ink: #201c09;
@@ -188,11 +190,11 @@
       font-family: var(--hand);
       font-size: .88rem;
       font-weight: 700;
-      transform: rotate(-1deg);
+      transform: translateY(16px) rotate(-1deg);
     }
     .margin-cue::before {
       position: absolute;
-      bottom: 7px;
+      bottom: 13px;
       left: 0;
       width: 18px;
       border-top: 2px solid currentColor;
@@ -201,7 +203,7 @@
     }
     .margin-cue::after {
       position: absolute;
-      bottom: 3px;
+      bottom: 9px;
       left: 14px;
       width: 7px;
       height: 7px;
@@ -687,9 +689,9 @@
       font-size: 15px;
       font-weight: 700;
     }
-    .svg-hand.amber-text { fill: var(--art-amber); font-size: 14px; }
+    .svg-hand.amber-text { fill: var(--art-amber-text); font-size: 14px; }
     .svg-product.amber-text,
-    .svg-small.amber-text { fill: var(--art-amber); }
+    .svg-small.amber-text { fill: var(--art-amber-text); }
     .svg-hand.sticky-text { fill: var(--art-yellow-ink); font-size: 17px; }
     .label { opacity: 0; transition: opacity .18s ease .62s; }
     .fade-in { opacity: 0; transition: opacity .34s ease .3s; }
@@ -838,101 +840,94 @@
       <section class="board-panel is-active" id="board-opportunity" role="tabpanel" aria-labelledby="board-opportunity-tab">
         <div class="canvas-scroll">
           <div class="canvas-wrap">
-            <svg class="business-board" viewBox="0 0 1440 720" role="img" aria-labelledby="business-title business-desc">
+            <svg class="business-board" viewBox="0 0 1440 720" role="group" aria-labelledby="business-title" aria-describedby="business-desc">
               <title id="business-title">Agent opportunity and value evidence whiteboard</title>
-              <desc id="business-desc">A business-first whiteboard that connects a concrete work opportunity to an appropriate level of investment, evidence, and a scale, adjust, or stop decision.</desc>
+              <desc id="business-desc">A business-first whiteboard that starts with a customer aspiration, prioritizes recurring and consequential pain, makes one work pattern concrete, then connects it to an appropriate level of investment, evidence, and a scale, adjust, or stop decision.</desc>
               <defs>
                 <marker id="business-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="ink"/></marker>
                 <marker id="business-amber-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="amber"/></marker>
+                <marker id="business-violet-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9" class="violet"/></marker>
               </defs>
-              <g transform="translate(38 20) rotate(-1)">
-                <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="fill-yellow"/>
-                <path d="M0 4 Q148 -4 296 4 L291 142 Q146 136 3 143 Z" class="ink"/>
-                <path d="M255 3 L296 4 L292 43 Z" fill="var(--art-board)" opacity=".85"/>
-                <path d="M255 3 L292 43 L296 4" class="ink" opacity=".45"/>
-                <text x="22" y="40" class="svg-hand sticky-text">Where is the friction?</text>
-                <text x="22" y="68" class="svg-hand sticky-text">Who owns the outcome?</text>
-                <text x="22" y="96" class="svg-hand sticky-text">What does today look like?</text>
-                <text x="22" y="124" class="svg-hand sticky-text">What is it costing now?</text>
+              <text x="60" y="42" class="svg-title">Find the opportunity worth pursuing</text>
+              <path d="M60 52 Q720 44 1380 52" class="ink" opacity=".35"/>
+              <g aria-hidden="true" transform="rotate(-1 185 88)">
+                <text x="60" y="88" class="svg-hand">“It would be great if an agent could …”</text>
+                <path d="M210 98 Q214 128 226 160" class="ink" opacity=".6" marker-end="url(#business-arrow)"/>
               </g>
-              <text x="370" y="62" class="svg-hand">Board 1 · find the opportunity worth scaling</text>
-              <path d="M370 70 Q766 76 1162 68" class="ink" opacity=".35"/>
-              <g aria-hidden="true" transform="rotate(-1 195 202)">
-                <text x="54" y="192" class="svg-hand">“It would be great if an agent could …”</text>
-                <text x="120" y="218" class="svg-tiny">make it testable — measure today first</text>
-                <path d="M181 226 Q177 238 182 254" class="ink" opacity=".6" marker-end="url(#business-arrow)"/>
+              <g class="stage-labels" aria-hidden="true">
+                <text x="60" y="128" class="svg-product">1 · Find it</text>
+                <text x="60" y="151" class="svg-hand">follow the pain</text>
+                <text x="60" y="370" class="svg-product">2 · Prove it</text>
+                <text x="60" y="393" class="svg-hand">test it small</text>
+                <text x="60" y="550" class="svg-product">3 · Improve it</text>
+                <text x="60" y="573" class="svg-hand">own the learning loop for what continues</text>
               </g>
 
-              <g id="opportunity" class="node-hit" tabindex="0" role="button" aria-label="Details for the business opportunity">
-                <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="node-fill"/>
-                <path d="M52 264 Q185 255 320 264 L316 365 Q185 373 54 363 Z" class="ink"/>
-                <text x="185" y="302" text-anchor="middle" class="svg-product">Concrete work opportunity</text>
-                <text x="185" y="328" text-anchor="middle" class="svg-small">job · friction · owner · baseline</text>
+              <g id="painSort" class="node-hit" tabindex="0" role="button" aria-label="Details for sorting recurring pain into an opportunity">
+                <rect x="50" y="116" width="300" height="182" fill="transparent" pointer-events="all"/>
+                <path d="M100 270 Q95 218 100 168" class="amber" opacity=".55" marker-end="url(#business-amber-arrow)"/>
+                <path d="M100 270 Q205 276 315 269" class="violet" opacity=".55" marker-end="url(#business-violet-arrow)"/>
+                <text x="77" y="220" text-anchor="middle" transform="rotate(-90 77 220)" class="svg-hand amber-text" style="font-size: 13px;">business impact</text>
+                <text x="210" y="291" text-anchor="middle" class="svg-hand" style="fill: var(--art-violet);">repeats</text>
+                <circle cx="145" cy="248" r="6" class="ink" opacity=".6"/>
+                <circle cx="188" cy="226" r="7" class="ink" opacity=".6"/>
+                <circle cx="232" cy="247" r="6" class="ink" opacity=".6"/>
+                <circle cx="254" cy="198" r="7" class="ink" opacity=".6"/>
+                <circle cx="284" cy="178" r="16" fill="var(--art-yellow)" opacity=".5"/>
+                <circle cx="284" cy="178" r="7" class="ink"/>
+                <path d="M262 174 Q269 156 286 158 Q306 160 304 179 Q301 198 283 198 Q265 195 262 174 Z" class="ink" style="stroke: var(--art-yellow-ink); stroke-width: 2.8;"/>
               </g>
-              <path d="M320 314 Q346 306 372 314" class="ink" marker-end="url(#business-arrow)"/>
+              <path d="M302 180 Q357 180 411 203" class="ink" marker-end="url(#business-arrow)"/>
+
+              <g id="opportunity" class="node-hit" tabindex="0" role="button" aria-label="Details for the concrete work pattern">
+                <path d="M420 166 Q575 157 730 166 L727 268 Q575 276 422 266 Z" class="node-fill"/>
+                <path d="M420 166 Q575 157 730 166 L727 268 Q575 276 422 266 Z" class="ink"/>
+                <text x="575" y="205" text-anchor="middle" class="svg-product">One concrete work pattern</text>
+                <text x="575" y="232" text-anchor="middle" class="svg-small">owner · baseline · repeatability</text>
+              </g>
               <g id="pattern" class="node-hit" tabindex="0" role="button" aria-label="Details for matching the investment to the work">
-                <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="fill-violet"/>
-                <path d="M380 236 Q613 225 846 237 L842 394 Q613 405 382 392 Z" class="violet"/>
-                <text x="613" y="267" text-anchor="middle" class="svg-product">Match the investment to the work</text>
-                <path d="M404 289 Q468 283 530 290 L528 344 Q467 350 406 343 Z" class="node-fill"/>
-                <path d="M404 289 Q468 283 530 290 L528 344 Q467 350 406 343 Z" class="ink"/>
-                <text x="467" y="314" text-anchor="middle" class="svg-small">Improve the process</text>
-                <text x="467" y="334" text-anchor="middle" class="svg-tiny">reduce friction</text>
-                <path d="M548 289 Q613 283 677 290 L675 344 Q613 350 550 343 Z" class="node-fill"/>
-                <path d="M548 289 Q613 283 677 290 L675 344 Q613 350 550 343 Z" class="ink"/>
-                <text x="613" y="314" text-anchor="middle" class="svg-small">Adopt a capability</text>
-                <text x="613" y="334" text-anchor="middle" class="svg-tiny">known path</text>
-                <path d="M695 289 Q759 283 822 290 L819 344 Q758 350 697 343 Z" class="node-fill"/>
-                <path d="M695 289 Q759 283 822 290 L819 344 Q758 350 697 343 Z" class="ink"/>
-                <text x="759" y="314" text-anchor="middle" class="svg-small">Build for this work</text>
-                <text x="759" y="334" text-anchor="middle" class="svg-tiny">new build + owner</text>
-                <text x="613" y="361" text-anchor="middle" class="svg-hand">What is the least change and ongoing responsibility</text>
-                <text x="613" y="380" text-anchor="middle" class="svg-hand">needed to meet the outcome?</text>
+                <rect x="418" y="280" width="315" height="31" fill="transparent" pointer-events="all"/>
+                <text x="575" y="303" text-anchor="middle" class="svg-hand" style="fill: var(--art-violet);">right-size it: improve · adopt · build</text>
               </g>
-              <path d="M846 314 Q872 306 898 314" class="ink" marker-end="url(#business-arrow)"/>
-              <g aria-hidden="true" transform="rotate(-1 1040 205)">
-                <text x="1040" y="144" text-anchor="middle" class="svg-hand amber-text">cost per accepted outcome</text>
-                <text x="1040" y="166" text-anchor="middle" class="svg-tiny">build + change + run + review + rework</text>
-                <path d="M912 174 Q1040 177 1168 174" class="amber" opacity=".75"/>
-                <text x="1040" y="192" text-anchor="middle" class="svg-tiny">accepted outcomes</text>
-                <text x="1040" y="207" text-anchor="middle" class="svg-tiny">against the rubric</text>
-                <text x="1040" y="229" text-anchor="middle" class="svg-hand amber-text">today ↔ pilot</text>
+              <path d="M575 312 Q575 345 575 388" class="violet" opacity=".7" marker-end="url(#business-violet-arrow)"/>
+
+              <path d="M60 340 Q720 333 1380 340" class="ink" opacity=".3"/>
+              <g id="pilot" class="node-hit" tabindex="0" role="button" aria-label="Details for a bounded pilot">
+                <path d="M450 397 Q575 388 700 397 L697 488 Q575 496 452 486 Z" class="node-fill"/>
+                <path d="M450 397 Q575 388 700 397 L697 488 Q575 496 452 486 Z" class="ink"/>
+                <text x="575" y="434" text-anchor="middle" class="svg-product">Bounded pilot</text>
+                <text x="575" y="460" text-anchor="middle" class="svg-small">agreed definition of good</text>
               </g>
+              <path d="M700 442 Q725 434 750 442" class="amber" marker-end="url(#business-amber-arrow)"/>
               <g id="evidence" class="node-hit" tabindex="0" role="button" aria-label="Details for value evidence">
-                <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="fill-amber"/>
-                <path d="M906 264 Q1040 255 1174 264 L1171 365 Q1040 373 908 363 Z" class="amber"/>
-                <text x="1040" y="302" text-anchor="middle" class="svg-product">Value evidence</text>
-                <text x="1040" y="327" text-anchor="middle" class="svg-small">quality · adoption · cost · outcome</text>
-                <text x="1040" y="349" text-anchor="middle" class="svg-tiny">against the agreed rubric</text>
+                <path d="M750 397 Q890 388 1030 397 L1027 488 Q890 496 752 486 Z" class="fill-amber"/>
+                <path d="M750 397 Q890 388 1030 397 L1027 488 Q890 496 752 486 Z" class="amber"/>
+                <text x="890" y="427" text-anchor="middle" class="svg-product">Value evidence</text>
+                <text x="890" y="451" text-anchor="middle" class="svg-small">quality · adoption</text>
+                <text x="890" y="472" text-anchor="middle" class="svg-small">cost per accepted outcome</text>
               </g>
-              <path d="M1140 264 Q1200 240 1168 174" class="amber dash-ink" opacity=".7" marker-end="url(#business-amber-arrow)"/>
-              <path d="M1175 314 Q1200 306 1224 314" class="amber" marker-end="url(#business-amber-arrow)"/>
-              <g id="valueDecision" class="node-hit" tabindex="0" role="button" aria-label="Details for the value decision">
-                <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="fill-amber"/>
-                <path d="M1230 264 Q1320 256 1401 265 L1398 365 Q1316 373 1232 363 Z" class="amber"/>
-                <text x="1316" y="302" text-anchor="middle" class="svg-product amber-text">Scale</text>
-                <text x="1316" y="325" text-anchor="middle" class="svg-small amber-text">adjust / stop</text>
-                <text x="1316" y="347" text-anchor="middle" class="svg-tiny">fund what the evidence supports</text>
+              <path d="M1030 442 Q1055 434 1080 442" class="amber" marker-end="url(#business-amber-arrow)"/>
+              <g id="valueDecision" class="node-hit" tabindex="0" role="button" aria-label="Details for deciding whether to scale, adjust, or stop">
+                <path d="M1080 397 Q1220 388 1360 397 L1357 488 Q1220 496 1082 486 Z" class="fill-amber"/>
+                <path d="M1080 397 Q1220 388 1360 397 L1357 488 Q1220 496 1082 486 Z" class="amber"/>
+                <text x="1220" y="434" text-anchor="middle" class="svg-product amber-text">Decide</text>
+                <text x="1220" y="460" text-anchor="middle" class="svg-small amber-text">scale · adjust · stop</text>
               </g>
-              <path d="M1316 365 Q1316 422 965 421 Q650 420 613 394" class="amber dash-ink" opacity=".7" marker-end="url(#business-amber-arrow)"/>
-              <text x="940" y="444" text-anchor="middle" class="svg-hand amber-text">adjust the approach, then re-test</text>
 
               <g id="learningLoop" class="node-hit" tabindex="0" role="button" aria-label="Details for the learning loop you own">
-                <path d="M75 512 Q704 498 1365 514" class="amber" opacity=".5"/>
-                <text x="78" y="546" class="svg-title">The learning loop you own</text>
-                <text x="720" y="570" text-anchor="middle" class="svg-hand amber-text">“A firm in the AI era is a learning system.” — Satya Nadella</text>
-                <text x="110" y="590" class="svg-hand amber-text">hill climb →</text>
-                <path d="M110 624 Q240 610 380 615 Q500 600 620 605 Q740 592 865 596 Q990 584 1100 590 Q1210 565 1328 555" class="amber" marker-end="url(#business-amber-arrow)"/>
-                <text x="110" y="650" class="svg-hand amber-text">define “good” — your outcome rubric</text>
-                <text x="593" y="650" class="svg-hand amber-text">evaluate real work + feedback</text>
-                <text x="1095" y="650" class="svg-hand amber-text">improve → prompts · skills · tools · workflow</text>
+                <rect x="60" y="520" width="1320" height="142" fill="transparent" pointer-events="all"/>
+                <path d="M60 520 Q720 510 1380 520" class="ink" opacity=".3"/>
+                <path d="M105 620 Q250 602 390 610 Q520 592 665 600 Q810 585 960 594 Q1090 580 1200 588 Q1270 568 1340 552" class="amber" marker-end="url(#business-amber-arrow)"/>
+                <text x="105" y="650" class="svg-hand amber-text">define “good” — your outcome rubric</text>
+                <text x="610" y="650" class="svg-hand amber-text">evaluate real work + feedback</text>
+                <text x="1075" y="650" class="svg-hand amber-text">improve → prompts · skills · tools · workflow</text>
+                <text x="720" y="690" text-anchor="middle" class="svg-hand amber-text">“A firm is a learning system.” — Satya Nadella</text>
               </g>
-              <text x="720" y="705" text-anchor="middle" class="svg-hand">Board 2 answers: what capabilities make this real, connected to the systems you already run, governed, and measurable?</text>
             </svg>
           </div>
         </div>
         <div class="business-actions">
-          <span class="business-hint">Tap any box for the detail behind it.</span>
+          <span class="business-hint">Tap a box to see the detail behind it.</span>
           <button class="business-continue" id="continue-to-architecture" type="button">Continue to enterprise architecture →</button>
         </div>
       </section>
@@ -973,12 +968,12 @@
                   </g>
                 </g>
 
-                <g id="github" class="node-hit" data-cat="surface" tabindex="-1" role="button" aria-label="Details for GitHub Copilot">
+                <g id="github" class="node-hit" data-cat="surface" tabindex="-1" role="button" aria-label="Details for GitHub Copilot, GitHub Enterprise, and GitHub Advanced Security">
                   <path d="M860 75 Q1105 69 1350 74 L1347 140 Q1105 146 862 142 Z" class="node-fill"/>
                   <path pathLength="1" d="M860 75 Q1105 69 1350 74 L1347 140 Q1105 146 862 142 Z" class="ink draw"/>
                   <g class="label">
                     <text x="1105" y="106" text-anchor="middle" class="svg-product">GitHub Copilot</text>
-                    <text x="1105" y="130" text-anchor="middle" class="svg-small">where developers already work</text>
+                    <text x="1105" y="130" text-anchor="middle" class="svg-small">GitHub Enterprise · Advanced Security</text>
                   </g>
                 </g>
 
@@ -1277,7 +1272,7 @@
   <script>
     const details = {
       m365: { title: "Microsoft 365 Copilot", role: "The everyday work surface where employees already are: chat, documents, meetings, and agents in the flow of work.", why: "The story starts where work happens, not with a platform diagram.", caveat: "It is a companion work surface, not a required first step for every agent. Work IQ can provide permission-aware work context for supported agent integrations." },
-      github: { title: "GitHub Copilot", role: "The developer work surface for code, review, and engineering tasks.", why: "Developers are a first-class agent audience alongside business users.", caveat: "It is a work surface, not an architecture runtime for business agents." },
+      github: { title: "GitHub Copilot · Enterprise · Advanced Security", role: "GitHub Copilot is the developer work surface for code, review, and engineering tasks. GitHub Enterprise provides the repository, collaboration, identity, and policy context; GitHub Advanced Security protects the software supply chain with code, secret, and dependency security.", why: "Developers are a first-class agent audience alongside business users, and agent-delivered code needs enterprise software-delivery controls.", caveat: "This is governance for code and repositories, not a universal runtime governance plane for business agents, models, or tool calls. Repository controls and security findings remain subject to each organization's enabled GitHub features and policies." },
       scout: { title: "Scout (preview)", role: "A preview experience that pairs the employee and developer work surfaces.", why: "Customers ask how the two Copilot surfaces relate to each other.", caveat: "Scout preview — paired Microsoft 365 Copilot + GitHub Copilot Business/Enterprise entitlement. It is drawn as a relationship, not a runtime, and no request path is implied." },
       studio: { title: "Copilot Studio", role: "Low-code path for agents and agent flows, with native Power Platform connector tools plus MCP and API integration.", why: "Makers and business teams can ship governed agents without pro-code delivery.", caveat: "Use it on its own or alongside Foundry. It is not a lesser step before Foundry, and not every connector crosses an API Management boundary." },
       foundry: { title: "Microsoft Foundry", role: "Pro-code agent platform: tools and toolboxes, API, MCP, Microsoft IQ, and A2A integration, plus evaluation, deployment, and tracing.", why: "Engineering teams need control over models, reusable knowledge, tool lifecycle, evaluation, and traces.", caveat: "Use it on its own or alongside Copilot Studio; this is not a forced fork. IQ integrations and some capabilities are preview." },
@@ -1297,16 +1292,18 @@
       businessSystems: { title: "Business systems of record", role: "Operational systems that hold the business context an agent needs, such as SAP, Salesforce, SQL, Excel, PTC, and Siemens.", why: "Useful agents need the right context from the systems the business already relies on, not a forced data-migration project.", caveat: "These sources remain authoritative. Reach them through the appropriate approved connector, API, MCP server, or data pattern, with the source system's identity and permissions preserved." },
       agent365: { title: "Microsoft Agent 365", role: "Estate-level inventory, ownership, and observe, govern, and secure capabilities across Microsoft and connected external agents.", why: "Leaders need one place to see and control the agent estate, including supported Amazon Bedrock and Google Vertex AI agents, revealed after the runtime story is understood.", caveat: "It is a scope, not a request path. External agents can synchronize to the registry and use supported SDK or OpenTelemetry integration for deeper observability, but coverage and controls depend on the supported connection—not every external platform is automatic." },
       handoff: { title: "Hand back to Board 1", role: "Connects this architecture to the measurable value loop that Board 1 owns.", why: "Architecture is only worth funding when it makes an outcome measurable.", caveat: "Board 1 owns the business opportunity and value evidence; this board stops at making that loop measurable." },
-      opportunity: { title: "Concrete work opportunity", role: "A named job, friction, accountable owner, and measurable baseline for today's process.", why: "It stops the conversation from becoming an unbounded product-first pilot.", caveat: "A broad AI aspiration is not yet a testable opportunity. Agree how today's quality, cycle time, and all-in cost will be measured before the pilot starts." },
+      painSort: { title: "Sort the pain", role: "Sort candidate work by how often it repeats and what happens when it slips, then take a consequential, repeatable pattern forward as a concrete work pattern.", why: "Recurring work with real consequence is where a measurable baseline exists and where improvement can compound across people and processes.", caveat: "This is a prioritization judgment, not a measured distribution or a fixed 80/20 rule. Rank the candidates with the owner's own evidence. Frequency alone does not justify a build; match the investment to the work." },
+      opportunity: { title: "Concrete work pattern", role: "A named, repeatable job with friction, an accountable owner, and a measurable baseline for today's process.", why: "It stops the conversation from becoming an unbounded product-first pilot and makes clear whether an improvement can be reused.", caveat: "A broad AI aspiration is not yet a testable work pattern. Agree how today's quality, cycle time, all-in cost, and repeatability will be measured before the pilot starts." },
       pattern: { title: "Match the investment to the work", role: "Decide whether to improve the process, adopt a proven capability, or build a purpose-designed capability with a named operating owner.", why: "It makes the investment and ongoing responsibility proportionate to the business work, rather than assuming every AI request needs a new build.", caveat: "Start with the least autonomy and smallest investment that can safely achieve the outcome. High volume alone is not enough; proprietary workflow, cross-system action, business consequence, and reuse can justify a purpose-built, governed solution." },
+      pilot: { title: "Bounded pilot", role: "A time-bound test of one work opportunity against an agreed outcome rubric.", why: "It creates an evidence-producing path from an aspiration to a funding decision without committing the organization to an unbounded rollout.", caveat: "Set the comparison, accountable owner, guardrails, and decision date before the work starts. A pilot is not successful because it runs; it earns its next investment only through observed value evidence." },
       evidence: { title: "Value evidence", role: "Combines quality, adoption, cost, business-system KPIs, and owner validation. Compare the same job before and after the pilot, including the fully loaded cost per accepted outcome.", why: "It distinguishes a promising technical pilot from a measurable business return.", caveat: "Include build, change, run, review, and rework costs for the work being compared. Run costs include model, tool, data, runtime, and operational costs. Telemetry and token counts inform the picture; neither alone proves value." },
-      valueDecision: { title: "Scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Set a bounded test and agreed decision date before starting. Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
+      valueDecision: { title: "Decide: scale, adjust, or stop", role: "A funding and operating decision based on validated evidence.", why: "A managed investment system learns and directs resources toward what creates outcomes.", caveat: "Set a bounded test and agreed decision date before starting. If evidence earns scale, define the scale hypothesis: expected cadence and business criticality; users and processes that depend on it; relevant data scope; and where the same work pattern could be reused over 12 months. These inputs size the operating model and architecture; they do not prove value before the pilot. Scale is not automatic; adjusting or stopping is a valid, disciplined result." },
       learningLoop: { title: "The learning loop you own", role: "Define the business outcome and its evaluation rubric, evaluate real work and feedback, then improve the next version of the system.", why: "The durable asset is not a rented model by itself. It is the organization’s workflow knowledge, outcome criteria, evidence, and controlled ability to improve.", caveat: "This is not autonomous production self-modification. Evaluate and version changes deliberately before promoting them. Improvements can include prompts, skills, tools, workflow, retrieved context, guardrails, and model choice; model training is a later, separate choice when justified." },
       hypothesis: { title: "Outcome hypothesis", role: "A testable claim about the work and result expected to change.", why: "It makes value falsifiable before technology work expands.", caveat: "A broad aspiration without an owner or measure is not yet a useful hypothesis." },
       baseline: { title: "Baseline", role: "The agreed current-state measure before intervention.", why: "It creates a comparison point for later validation.", caveat: "Instrumenting the solution after launch cannot reliably recreate every baseline." },
       adoption: { title: "Adoption + process change", role: "Behavior, workflow, and accountability changes required to realize value.", why: "Deployment alone rarely changes business performance.", caveat: "Usage volume is not sufficient evidence that the process improved." },
       impact: { title: "Validated business impact", role: "Triangulates operational telemetry, business-system KPIs, and owner validation.", why: "It separates observed technical activity from an accountable business result.", caveat: "Telemetry enters validation as one evidence source; it does not flow directly into ROI." },
-      scale: { title: "Scale / adjust / stop", role: "An executive decision based on validated evidence.", why: "A disciplined loop funds what works, changes what might work, and stops what does not.", caveat: "Scale is not the automatic next step; adjust or stop are valid outcomes." }
+      scale: { title: "Decide: scale, adjust, or stop", role: "An executive decision based on validated evidence.", why: "A disciplined loop funds what works, changes what might work, and stops what does not.", caveat: "If evidence earns scale, define expected cadence and criticality, users and processes that depend on it, relevant data scope, and where the same work could be reused over 12 months. These inputs guide the operating model and architecture; they do not prove value before the pilot. Scale is not the automatic next step; adjust or stop are valid outcomes." }
     };
 
     const questions = {
